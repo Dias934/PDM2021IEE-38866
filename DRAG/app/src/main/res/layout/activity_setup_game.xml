@@ -7,7 +7,7 @@
     tools:context=".setupGame.SetupGameActivity">
 
     <TextView
-        android:id="@+id/game_stup_title"
+        android:id="@+id/game_setup_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
@@ -29,7 +29,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/game_stup_title"
+        app:layout_constraintTop_toBottomOf="@+id/game_setup_title"
+        android:weightSum="100"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
@@ -37,19 +38,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16sp"
-            android:layout_weight="1"
+            android:layout_weight="50"
             android:text="@string/game_mode_title_string"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/current_game_mode"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16sp"
-            android:layout_weight="1"
+            android:layout_weight="50"
             android:text="@string/online_value"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -65,27 +66,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/game_mode_layout"
         app:layout_constraintVertical_bias="0.0"
+        android:weightSum="100"
         tools:visibility="visible">
 
         <TextView
             android:id="@+id/lobby_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16sp"
-            android:layout_weight="0.4"
+            android:layout_weight="50"
             android:text="@string/lobby_name_string"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
+            android:lines="1"
             android:textSize="24sp" />
 
         <EditText
             android:id="@+id/lobby_name_input"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_weight="0.4"
+            android:layout_marginStart="16sp"
             android:layout_marginEnd="16sp"
-            android:ems="8"
+            android:layout_weight="40"
+            android:ems="@integer/max_lobby_name"
+            android:focusedByDefault="true"
             android:inputType="text"
+            android:maxLength="@integer/max_lobby_name"
+            android:textAlignment="center"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -95,7 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_weight="0.4"
+        android:weightSum="100"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,22 +112,25 @@
 
         <TextView
             android:id="@+id/n_players"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16sp"
-            android:layout_weight="1"
+            android:layout_weight="70"
+            android:lines="1"
             android:text="@string/n_players_string"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textSize="24sp" />
 
         <EditText
             android:id="@+id/n_players_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
             android:layout_marginEnd="16sp"
-            android:layout_weight="1"
+            android:layout_weight="20"
             android:ems="2"
             android:inputType="number"
+            android:maxLength="@integer/max_digits"
             android:selectAllOnFocus="false"
             android:singleLine="true"
             android:textAlignment="center"
@@ -134,6 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:orientation="horizontal"
+        android:weightSum="100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -143,22 +153,25 @@
 
         <TextView
             android:id="@+id/n_rounds"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16sp"
-            android:layout_weight="1"
+            android:layout_weight="70"
             android:text="@string/n_rounds_string"
-            android:textAlignment="center"
+            android:textAlignment="viewStart"
             android:textSize="24sp" />
 
         <EditText
             android:id="@+id/n_rounds_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16sp"
             android:layout_marginEnd="16sp"
-            android:layout_weight="1"
+            android:layout_weight="20"
             android:ems="2"
             android:inputType="number"
+            android:maxLength="@integer/max_digits"
+            android:text=""
             android:textAlignment="center"
             android:textSize="14sp" />
     </LinearLayout>

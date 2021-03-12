@@ -12,4 +12,10 @@
     <string name="setup_game_button_offline_string">Start game</string>
     <string name="setup_game_button_online_string">Create lobby</string>
     <string name="title_activity_setup_game" translatable="false">s</string>
+    <string name="create_lobby_string">Create lobby</string>
+    <string name="create_lobby_button_string">Create</string>
+    <string name="lobby_name_header_string">Lobby name</string>
+    <string name="lobby_availability_string">Players</string>
+    <string name="join_button_string">Join</string>
+    <string name="lobby_players" translatable="false">%d/%d</string>
 </resources>

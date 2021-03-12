@@ -31,8 +31,6 @@ class SetupGameActivity : AppCompatActivity() {
 
         if(model.gameMode == GameModes.OFFLINE){
             views.currentGameMode.setText(R.string.offline_value)
-            views.lobbyLayout.visibility = View.GONE
-            views.setupGameButton.setText(R.string.setup_game_button_offline_string)
         }
     }
 }
