@@ -2,7 +2,14 @@
 <resources>
     <string name="app_name">Drag</string>
     <string name="game_title_string">Bem-vindo ao Drag</string>
-    <string name="offline_button_string">Local</string>
-    <string name="online_button_string">Remoto</string>
+    <string name="offline_value">Local</string>
+    <string name="online_value">Remoto</string>
     <string name="game_mode_string">Seleccione um modo de jogo:</string>
+    <string name="game_mode_title_string">Modo de jogo:</string>
+    <string name="game_setup_title_string">Configuração de Jogo</string>
+    <string name="lobby_name_string">Nome da sala:</string>
+    <string name="n_players_string">Nº de jogadores:</string>
+    <string name="n_rounds_string">Nº de rondas:</string>
+    <string name="setup_game_button_offline_string">Iniciar jogo</string>
+    <string name="setup_game_button_online_string">Criar sala</string>
 </resources>

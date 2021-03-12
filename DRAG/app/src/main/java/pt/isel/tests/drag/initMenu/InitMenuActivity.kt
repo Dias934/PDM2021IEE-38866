@@ -6,18 +6,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import pt.isel.tests.drag.R
+import pt.isel.tests.drag.databinding.ActivityInitMenuBinding
+import pt.isel.tests.drag.setupGame.SetupGameActivity
 
 class InitMenuActivity : AppCompatActivity() {
 
     companion object{
-        fun activityIntent(context: Context) = Intent(context, InitMenuActivity::class.java)
+        fun newIntent(context: Context) = Intent(context, InitMenuActivity::class.java)
     }
+
+    private val view by lazy {ActivityInitMenuBinding.inflate(layoutInflater)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_init_menu)
+        setContentView(view.root)
     }
 
-    fun offlineMode(view: View) = startActivity(activityIntent(this))
-    fun onlineMode(view: View) = startActivity(activityIntent(this))
+    fun offlineMode(view: View) = startActivity(SetupGameActivity.offlineSetupGame(this))
+
+    fun onlineMode(view: View) = startActivity(SetupGameActivity.onlineSetupGame(this))
 }
