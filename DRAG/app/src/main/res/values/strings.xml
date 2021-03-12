@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Drag</string>
+    <string name="game_title_string">Welcome to Drag</string>
+    <string name="offline_button_string">Offline</string>
+    <string name="online_button_string">Online</string>
+    <string name="game_mode_string">Select a game mode:</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Drag</string>
+    <string name="game_title_string">Bem-vindo ao Drag</string>
+    <string name="offline_button_string">Local</string>
+    <string name="online_button_string">Remoto</string>
+    <string name="game_mode_string">Seleccione um modo de jogo:</string>
+</resources>
