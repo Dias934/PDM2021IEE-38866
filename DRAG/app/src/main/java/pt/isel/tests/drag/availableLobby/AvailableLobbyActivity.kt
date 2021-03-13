@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pt.isel.tests.drag.R
-import pt.isel.tests.drag.setupGame.SetupGameActivity
+import pt.isel.tests.drag.setupLobby.SetupLobbyActivity
 
 class AvailableLobbyActivity : AppCompatActivity() {
 
@@ -33,7 +33,7 @@ class AvailableLobbyActivity : AppCompatActivity() {
     }
 
 
-    fun createLobby(view: View) = startActivity(SetupGameActivity.onlineSetupGame(this))
+    fun createLobby(view: View) = startActivity(SetupLobbyActivity.remoteSetupGame(this))
 
 
 

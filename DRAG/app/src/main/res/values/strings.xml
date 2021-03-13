@@ -1,16 +1,15 @@
 <resources>
     <string name="app_name">Drag</string>
     <string name="game_title_string">Welcome to Drag</string>
-    <string name="offline_value">Offline</string>
-    <string name="online_value">Online</string>
+    <string name="local_value">Local</string>
+    <string name="remote_value">Remote</string>
     <string name="game_mode_string">Select a game mode:</string>
     <string name="game_mode_title_string">Game mode:</string>
-    <string name="game_setup_title_string">Game Setup</string>
+    <string name="game_setup_title_string">Lobby Setup</string>
     <string name="lobby_name_string">Lobby name:</string>
     <string name="n_players_string">Nº of players:</string>
     <string name="n_rounds_string">Nº of rounds:</string>
-    <string name="setup_game_button_offline_string">Start game</string>
-    <string name="setup_game_button_online_string">Create lobby</string>
+    <string name="setup_game_button_remote_string">Create lobby</string>
     <string name="title_activity_setup_game" translatable="false">s</string>
     <string name="create_lobby_string">Create lobby</string>
     <string name="create_lobby_button_string">Create</string>

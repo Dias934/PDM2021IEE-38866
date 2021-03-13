@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".setupGame.SetupGameActivity" />
+        <activity android:name=".setupLobby.SetupLobbyActivity" />
         <activity android:name=".availableLobby.AvailableLobbyActivity" />
     </application>
 

@@ -5,10 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import pt.isel.tests.drag.R
 import pt.isel.tests.drag.availableLobby.AvailableLobbyActivity
 import pt.isel.tests.drag.databinding.ActivityInitMenuBinding
-import pt.isel.tests.drag.setupGame.SetupGameActivity
+import pt.isel.tests.drag.setupLobby.SetupLobbyActivity
 
 class InitMenuActivity : AppCompatActivity() {
 
@@ -23,7 +22,7 @@ class InitMenuActivity : AppCompatActivity() {
         setContentView(view.root)
     }
 
-    fun offlineMode(view: View) = startActivity(SetupGameActivity.offlineSetupGame(this))
+    fun offlineMode(view: View) = startActivity(SetupLobbyActivity.localSetupGame(this))
 
     fun onlineMode(view: View) = startActivity(AvailableLobbyActivity.newIntent(this))
 }

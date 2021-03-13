@@ -19,6 +19,9 @@ data class Lobby(
     @ColumnInfo(name ="name")
     var name: String = "",
 
+    @ColumnInfo(name = "type")
+    var type : LobbyType,
+
     @ColumnInfo(name ="maxPlayers" )
     var nPlayers : Int = MIN_N_PLAYERS,
 
@@ -31,6 +34,10 @@ data class Lobby(
     @ColumnInfo(name = "players")
     var players: MutableList<String> = mutableListOf()
 )
+
+enum class LobbyType{
+    LOCAL, REMOTE
+}
 
 enum class LobbyState {
     OPEN, PLAYING, CLOSED
