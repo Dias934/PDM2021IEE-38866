@@ -4,15 +4,10 @@ import androidx.room.TypeConverter
 import pt.isel.tests.drag.repository.LobbyState
 import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.repository.PlayerType
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 private const val SEPARATOR ="/"
 
 class Converters {
-    private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yy")
-
     @TypeConverter
     fun toLobbyState(state : String) : LobbyState = LobbyState.valueOf(state)
 
@@ -32,19 +27,9 @@ class Converters {
     fun fromPlayerType(type: PlayerType) : String = type.name
 
     @TypeConverter
-    fun fromLocalDateTime(date: LocalDateTime) : String = date.format(formatter)
-
-    @TypeConverter
-    fun toLocalDate(date: String) : LocalDateTime = LocalDateTime.parse(date, formatter)
-
-    @TypeConverter
     fun toList(players: String) : List<String> = players.split(SEPARATOR)
 
     @TypeConverter
-    fun fromList(players: List<String>):String =
-        if(players.isNotEmpty())
-            players.reduce {acc, next -> acc + SEPARATOR + next}
-        else
-            ""
+    fun fromList(players: List<String>) = players.reduce{acc, next -> acc + SEPARATOR + next}
 
 }
