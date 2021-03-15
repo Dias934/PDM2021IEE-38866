@@ -1,11 +1,8 @@
 package pt.isel.tests.drag.repository
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.ABORT
-import androidx.room.Query
 
 @Dao
 interface LobbyDao{
@@ -22,15 +19,18 @@ interface LobbyDao{
     @Query("Select * from Lobby")
     fun getAll(): LiveData<Lobby>
 
+    @Update
+    fun updatePlayers(lobby: Lobby)
+
 }
 
 @Dao
 interface PlayerDao{
     @Delete
-    fun delete(lobby: Lobby): Int
+    fun delete(player: Player): Int
 
     @Insert(onConflict = ABORT)
-    fun insert(lobby: Lobby)
+    fun insert(player: Player)
 
     @Query("Select * from Player where lobbyId=:lobbyId and id=:playerId")
     fun get(lobbyId : String, playerId : String): LiveData<Player>

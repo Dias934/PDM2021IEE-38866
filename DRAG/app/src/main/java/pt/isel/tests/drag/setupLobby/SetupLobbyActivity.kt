@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivitySetupLobbyBinding
+import pt.isel.tests.drag.lobby.LobbyActivity
 import pt.isel.tests.drag.repository.LobbyType
 
 const val TAG = "SetupGameActivity"
@@ -23,8 +25,12 @@ class SetupLobbyActivity : AppCompatActivity() {
             .apply { putExtra(TYPE_FIELD, type) }
     }
 
-    private val views by lazy {ActivitySetupLobbyBinding.inflate(layoutInflater)}
+    private val views by lazy { ActivitySetupLobbyBinding.inflate(layoutInflater)}
     private val model by viewModels<SetupLobbyViewModel>()
+
+    private val minPlayers by lazy{resources.getInteger(R.integer.min_players)}
+    private val minRounds by lazy{resources.getInteger(R.integer.min_rounds)}
+    private val minChars by lazy{resources.getInteger(R.integer.min_chars)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,4 +40,47 @@ class SetupLobbyActivity : AppCompatActivity() {
             views.currentGameMode.setText(R.string.local_value)
         }
     }
+
+    fun createLobby(view: View){
+        val (players, rounds, name) = getValidInputs()
+
+        if(players == null || rounds == null || name == null)
+            return
+
+        model.createLobby(name, players, rounds)
+        model.lobbyId.observe(this, { id ->
+            startActivity(LobbyActivity.localLobby(this, id))
+        })
+    }
+
+    private fun getNumPlayers(): Int ? =
+            views.nPlayersInput.text.toString().trim().toInt()
+                    .takeIf{it >= minPlayers}
+
+    private fun getNumRounds(): Int ? =
+            views.nRoundsInput.text.toString().trim().toInt()
+                    .takeIf{it >= minRounds}
+
+    private fun getLobbyName(): String ? =
+            views.lobbyNameInput.text.toString().trim()
+                    .takeIf{it.length >= minChars}
+
+    private fun getValidInputs(): SetupLobbyInput {
+        val nPlayers = getNumPlayers()
+        val nRounds = getNumRounds()
+        val lobbyName = getLobbyName()
+
+        if(nPlayers == null)
+            views.nPlayersInput.error = getString(R.string.n_players_error).format(minPlayers)
+
+        if(nRounds == null)
+            views.nRoundsInput.error = getString(R.string.n_rounds_error).format(minRounds)
+
+        if(lobbyName == null)
+            views.lobbyNameInput.error = getString(R.string.lobby_name_error).format(minChars)
+
+        return SetupLobbyInput(nPlayers,nRounds,lobbyName)
+    }
+
+    private data class SetupLobbyInput(val players: Int?, val rounds: Int?, val name: String?)
 }
