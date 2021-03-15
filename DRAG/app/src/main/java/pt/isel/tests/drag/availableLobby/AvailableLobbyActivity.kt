@@ -5,10 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import pt.isel.tests.drag.R
+import pt.isel.tests.drag.databinding.ActivityAvailableLobbyBinding
+import pt.isel.tests.drag.repository.Lobby
+import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.setupLobby.SetupLobbyActivity
 
 class AvailableLobbyActivity : AppCompatActivity() {
@@ -17,23 +20,40 @@ class AvailableLobbyActivity : AppCompatActivity() {
         fun newIntent(context: Context) = Intent(context, AvailableLobbyActivity::class.java)
     }
 
-    private val lobbyList by lazy{findViewById<RecyclerView>(R.id.lobby_list)}
-    private val model by viewModels<AvailableLobbyViewModel>()
 
+    private val model by viewModels<AvailableLobbyViewModel>()
+    private val views by lazy{ ActivityAvailableLobbyBinding.inflate(layoutInflater)}
+    private val lobbyList by lazy {views.lobbyList}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_available_lobby)
+        setContentView(views.root)
+        setLobbyListHeader()
 
         val lobbyAdapter = AvailableLobbyAdapter(this)
         lobbyList.adapter = lobbyAdapter
         lobbyList.layoutManager = LinearLayoutManager(this)
 
-        //lobbyAdapter.lobbyList = listOf("hello", "there")
+        lobbyAdapter.lobbyList = listOf(Lobby(LobbyType.REMOTE,  "sala 1"),
+                Lobby(LobbyType.REMOTE,"sala 2"))
     }
 
 
-    fun createLobby(view: View) = startActivity(SetupLobbyActivity.remoteSetupGame(this))
+    private fun setLobbyListHeader(){
+        views.lobbyListHeader.playerActionButton.visibility = View.INVISIBLE
+        textViewHeaderSet(views.lobbyListHeader.playerNameView, R.string.lobby_name_header_string)
+        textViewHeaderSet(views.lobbyListHeader.playerStateView, R.string.lobby_player_string)
+    }
+
+    private fun textViewHeaderSet(text: TextView, idText: Int){
+        text.setText(idText)
+        text.textSize = 18F
+        text.setTextColor(resources.getColor(R.color.white,null))
+    }
+
+
+
+    fun goToSetupLobby(view: View) = startActivity(SetupLobbyActivity.remoteSetupGame(this))
 
 
 

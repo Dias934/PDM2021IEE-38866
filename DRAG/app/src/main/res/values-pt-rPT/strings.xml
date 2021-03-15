@@ -10,11 +10,14 @@
     <string name="lobby_name_string">Nome da sala:</string>
     <string name="n_players_string">Nº de jogadores:</string>
     <string name="n_rounds_string">Nº de rondas:</string>
-    <string name="setup_game_button_string">Iniciar jogo</string>
-    <string name="setup_game_button_remote_string">Criar sala</string>
+    <string name="start_string">Iniciar</string>
     <string name="create_lobby_string">Criar sala</string>
     <string name="create_lobby_button_string">Criar</string>
     <string name="lobby_name_header_string">Nome da sala</string>
-    <string name="lobby_availability_string">Jogadores</string>
+    <string name="lobby_player_string">Jogadores</string>
     <string name="join_button_string">Entrar</string>
+    <string name="ready_string">Pronto</string>
+    <string name="n_players_error">Mínimo nº de jogadores é %d</string>
+    <string name="n_rounds_error">Mínimo nº de rondas é %d</string>
+    <string name="lobby_name_error">Mínimo nº de caracteres é %d</string>
 </resources>

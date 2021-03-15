@@ -2,6 +2,8 @@ package pt.isel.tests.drag.repository
 
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 const val MIN_N_PLAYERS = 5
@@ -12,27 +14,31 @@ const val START_TURN_NUMBER = 0
 
 @Entity(tableName = "Lobby")
 data class Lobby(
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    var id: String = UUID.randomUUID().toString(),
-
-    @ColumnInfo(name ="name")
-    var name: String = "",
 
     @ColumnInfo(name = "type")
-    var type : LobbyType,
+        var type : LobbyType = LobbyType.LOCAL,
+
+    @ColumnInfo(name ="name")
+        var name: String = "",
 
     @ColumnInfo(name ="maxPlayers" )
-    var nPlayers : Int = MIN_N_PLAYERS,
+        var nPlayers : Int = MIN_N_PLAYERS,
 
     @ColumnInfo(name = "maxRounds")
-    var nRound : Int = MIN_N_ROUNDS,
+        var nRound : Int = MIN_N_ROUNDS,
 
     @ColumnInfo(name = "state")
-    var state : LobbyState = LobbyState.OPEN,
+        var state : LobbyState = LobbyState.OPEN,
+
+    @PrimaryKey
+        @ColumnInfo(name = "id")
+        var id: String = UUID.randomUUID().toString(),
+
+    @ColumnInfo(name = "date")
+        var date: LocalDateTime = LocalDateTime.now(),
 
     @ColumnInfo(name = "players")
-    var players: MutableList<String> = mutableListOf()
+        var players: MutableList<String> = mutableListOf()
 )
 
 enum class LobbyType{
@@ -40,7 +46,7 @@ enum class LobbyType{
 }
 
 enum class LobbyState {
-    OPEN, PLAYING, CLOSED
+    OPEN, FULL, PLAYING, CLOSED
 }
 
 @Entity(
@@ -56,29 +62,37 @@ enum class LobbyState {
     ]
 )
 data class Player(
-    @ColumnInfo( name = "lobbyId")
-    var lobbyId: String,
+        @ColumnInfo(name = "name")
+        var name: String ="",
 
-    @ColumnInfo(name ="id")
-    var id: String = UUID.randomUUID().toString(),
+        @ColumnInfo(name = "type")
+        var type: PlayerType = PlayerType.NORMAL,
 
-    @ColumnInfo(name = "name")
-    var name: String ="",
+        @ColumnInfo( name = "lobbyId")
+        var lobbyId: String,
 
-    @ColumnInfo(name = "type")
-    var type: PlayerType = PlayerType.NORMAL
+        @ColumnInfo(name ="id")
+        var id: String = UUID.randomUUID().toString()
 )
 
 enum class PlayerType {
-    MASTER, NORMAL
+    OWNER, NORMAL
 }
 
+data class Game(
+        var lobbyId: String,
+
+        var id: String= UUID.randomUUID().toString(),
+
+        var date: LocalDate = LocalDate.now()
+)
+
 data class Round(
-    var lobbyId: String,
+        var lobbyId: String,
 
-    var order: MutableList<String>,
+        var order: MutableList<String>,
 
-    var number: Int = START_ROUND_NUMBER,
+        var number: Int = START_ROUND_NUMBER,
 
 )
 
