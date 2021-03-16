@@ -47,7 +47,7 @@ class SetupLobbyActivity : AppCompatActivity() {
         if(players == null || rounds == null || name == null)
             return
 
-        model.createLobby(name, players, rounds)
+        model.createLobby(name, players, rounds, getString(R.string.player_value))
         model.lobbyId.observe(this, { id ->
             startActivity(LobbyActivity.localLobby(this, id))
         })

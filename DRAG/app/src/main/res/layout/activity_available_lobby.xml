@@ -62,7 +62,7 @@
 
             <include
                 android:id="@+id/lobby_list_header"
-                layout="@layout/player_item" />
+                layout="@layout/available_lobby_item" />
 
         </FrameLayout>
 

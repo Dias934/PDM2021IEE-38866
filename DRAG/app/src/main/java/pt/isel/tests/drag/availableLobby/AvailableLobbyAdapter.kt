@@ -14,9 +14,9 @@ const val TAG ="AvailableLobbyAdapter"
 const val AVAILABILITY = "%d/%d"
 
 class AvailableLobbyAdapter internal  constructor(private val context: Context) :
-    RecyclerView.Adapter<AvailableLobbyAdapter.LobbyViewHolder>() {
+    RecyclerView.Adapter<AvailableLobbyAdapter.AvailableLobbyViewHolder>() {
 
-    inner class LobbyViewHolder(lobbyView: View) : RecyclerView.ViewHolder(lobbyView) {
+    inner class AvailableLobbyViewHolder(lobbyView: View) : RecyclerView.ViewHolder(lobbyView) {
         val lobbyNameView: TextView = lobbyView.findViewById(R.id.lobby_name_header)
         val lobbyAvailabilityView: TextView = lobbyView.findViewById(R.id.lobby_availability_header)
         val lobbyJoinButton: Button = lobbyView.findViewById(R.id.join_button)
@@ -30,12 +30,12 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LobbyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailableLobbyViewHolder {
         val lobbyView = inflater.inflate(R.layout.available_lobby_item, parent, false)
-        return LobbyViewHolder(lobbyView)
+        return AvailableLobbyViewHolder(lobbyView)
     }
 
-    override fun onBindViewHolder(holder: LobbyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AvailableLobbyViewHolder, position: Int) {
         val lobby = lobbyList[position]
         holder.lobbyNameView.text = lobby.name
         holder.lobbyAvailabilityView.text =  String.format(AVAILABILITY, lobby.players.size, lobby.nPlayers)

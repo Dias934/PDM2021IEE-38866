@@ -3,6 +3,7 @@ package pt.isel.tests.drag.repository.converters
 import androidx.room.TypeConverter
 import pt.isel.tests.drag.repository.LobbyState
 import pt.isel.tests.drag.repository.LobbyType
+import pt.isel.tests.drag.repository.PlayerState
 import pt.isel.tests.drag.repository.PlayerType
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -30,6 +31,12 @@ class Converters {
 
     @TypeConverter
     fun fromPlayerType(type: PlayerType) : String = type.name
+
+    @TypeConverter
+    fun toPlayerState(state : String) : PlayerState = PlayerState.valueOf(state)
+
+    @TypeConverter
+    fun fromPlayerState(state: PlayerState) : String = state.name
 
     @TypeConverter
     fun fromLocalDateTime(date: LocalDateTime) : String = date.format(formatter)

@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import pt.isel.tests.drag.repository.converters.Converters
 
-@Database(entities = [Lobby::class, Player::class], version = 1)
+@Database(entities = [Lobby::class, Player::class], version = 2)
 @TypeConverters(Converters::class)
 abstract class Database : RoomDatabase() {
 

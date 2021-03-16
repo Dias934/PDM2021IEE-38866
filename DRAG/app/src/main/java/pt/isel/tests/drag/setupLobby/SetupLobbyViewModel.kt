@@ -15,7 +15,7 @@ class SetupLobbyViewModel(private val app: Application, private val state: Saved
 
         val lobbyType: LobbyType by lazy { state.get<LobbyType>(TYPE_FIELD)?: LobbyType.LOCAL }
 
-        val repository by lazy {
+        private val repository by lazy {
                 if(lobbyType == LobbyType.LOCAL)
                         app.localRepository
                 else
@@ -24,7 +24,7 @@ class SetupLobbyViewModel(private val app: Application, private val state: Saved
 
         lateinit var lobbyId: LiveData<String>
 
-        fun createLobby(name: String, players: Int, rounds: Int) {
-                lobbyId = repository.createLobby(lobbyType, name, players, rounds)
+        fun createLobby(name: String, players: Int, rounds: Int, defaultPlayerName: String) {
+                lobbyId = repository.createLobby(lobbyType, name, players, rounds, defaultPlayerName)
         }
 }

@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:weightSum="100">
 
     <TextView
         android:id="@+id/player_name_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="70"
         android:layout_marginStart="16sp"
         android:layout_marginEnd="16sp"
+        android:layout_weight="40"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/player_state_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="15"
         android:layout_marginStart="16sp"
         android:layout_marginEnd="16sp"
+        android:layout_weight="20"
         android:text="TextView" />
 
     <Button
-        android:id="@+id/player_action_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_player_name_button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="15"
         android:layout_marginStart="16sp"
         android:layout_marginEnd="16sp"
-        android:text="Button" />
+        android:layout_weight="40"
+        android:text="@string/edit_name_value"
+        android:textSize="12sp" />
 </LinearLayout>

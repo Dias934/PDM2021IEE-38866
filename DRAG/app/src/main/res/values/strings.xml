@@ -17,8 +17,14 @@
     <string name="join_button_string">Join</string>
     <string name="lobby_players" translatable="false">%d/%d</string>
     <string name="ready_string">Ready</string>
-    <string name="start_string">Start</string>
+    <string name="start_string">Start game</string>
     <string name="n_players_error">Minimum nº of players is %d</string>
     <string name="n_rounds_error">Minimum nº of rouds is %d</string>
     <string name="lobby_name_error">Minimum nº of characters is %d</string>
+    <string name="edit_name_value">Edit name</string>
+    <string name="player_value">Player%d</string>
+    <string name="not_ready_string">Not ready</string>
+    <string name="confirm_string">Confirm</string>
+    <string name="cancel_string">Cancel</string>
+    <string name="player_name_hint">Write your name here (min %d characters)</string>
 </resources>

@@ -68,8 +68,11 @@ data class Player(
         @ColumnInfo(name = "type")
         var type: PlayerType = PlayerType.NORMAL,
 
+        @ColumnInfo(name = "state")
+        var state: PlayerState = PlayerState.NOT_READY,
+
         @ColumnInfo( name = "lobbyId")
-        var lobbyId: String,
+        var lobbyId: String = "",
 
         @ColumnInfo(name ="id")
         var id: String = UUID.randomUUID().toString()
@@ -77,6 +80,10 @@ data class Player(
 
 enum class PlayerType {
     OWNER, NORMAL
+}
+
+enum class PlayerState{
+    READY, NOT_READY
 }
 
 data class Game(

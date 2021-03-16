@@ -40,9 +40,10 @@ class AvailableLobbyActivity : AppCompatActivity() {
 
 
     private fun setLobbyListHeader(){
-        views.lobbyListHeader.playerActionButton.visibility = View.INVISIBLE
-        textViewHeaderSet(views.lobbyListHeader.playerNameView, R.string.lobby_name_header_string)
-        textViewHeaderSet(views.lobbyListHeader.playerStateView, R.string.lobby_player_string)
+
+        views.lobbyListHeader.joinButton.visibility = View.INVISIBLE
+        textViewHeaderSet(views.lobbyListHeader.lobbyNameHeader, R.string.lobby_name_header_string)
+        textViewHeaderSet(views.lobbyListHeader.lobbyNameHeader, R.string.lobby_player_string)
     }
 
     private fun textViewHeaderSet(text: TextView, idText: Int){

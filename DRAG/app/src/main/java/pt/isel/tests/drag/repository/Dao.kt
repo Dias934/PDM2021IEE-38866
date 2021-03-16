@@ -32,9 +32,15 @@ interface PlayerDao{
     @Insert(onConflict = ABORT)
     fun insert(player: Player)
 
+    @Insert(onConflict = ABORT)
+    fun insertAll(players:MutableList<Player>)
+
     @Query("Select * from Player where lobbyId=:lobbyId and id=:playerId")
     fun get(lobbyId : String, playerId : String): LiveData<Player>
 
     @Query("Select * from Player where lobbyId = :lobbyId")
-    fun getAllPlayers(lobbyId: String): LiveData<Player>
+    fun getAllPlayers(lobbyId: String): LiveData<MutableList<Player>>
+
+    @Update
+    fun update(player: Player)
 }
