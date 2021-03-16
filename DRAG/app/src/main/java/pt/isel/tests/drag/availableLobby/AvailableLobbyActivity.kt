@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivityAvailableLobbyBinding
+
 import pt.isel.tests.drag.repository.Lobby
 import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.setupLobby.SetupLobbyActivity
@@ -29,7 +30,6 @@ class AvailableLobbyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(views.root)
         setLobbyListHeader()
-
         val lobbyAdapter = AvailableLobbyAdapter(this)
         lobbyList.adapter = lobbyAdapter
         lobbyList.layoutManager = LinearLayoutManager(this)
@@ -40,15 +40,13 @@ class AvailableLobbyActivity : AppCompatActivity() {
 
 
     private fun setLobbyListHeader(){
-
         views.lobbyListHeader.joinButton.visibility = View.INVISIBLE
-        textViewHeaderSet(views.lobbyListHeader.lobbyNameHeader, R.string.lobby_name_header_string)
-        textViewHeaderSet(views.lobbyListHeader.lobbyNameHeader, R.string.lobby_player_string)
+        textViewHeaderSet(views.lobbyListHeader.lobbyNameHeader)
+        textViewHeaderSet(views.lobbyListHeader.lobbyAvailabilityHeader)
+        textViewHeaderSet(views.lobbyListHeader.lobbyRounds)
     }
 
-    private fun textViewHeaderSet(text: TextView, idText: Int){
-        text.setText(idText)
-        text.textSize = 18F
+    private fun textViewHeaderSet(text: TextView){
         text.setTextColor(resources.getColor(R.color.white,null))
     }
 

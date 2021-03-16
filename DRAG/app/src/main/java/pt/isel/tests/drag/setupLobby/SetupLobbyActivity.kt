@@ -44,22 +44,20 @@ class SetupLobbyActivity : AppCompatActivity() {
     fun createLobby(view: View){
         val (players, rounds, name) = getValidInputs()
 
-        if(players == null || rounds == null || name == null)
-            return
-
-        model.createLobby(name, players, rounds, getString(R.string.player_value))
-        model.lobbyId.observe(this, { id ->
-            startActivity(LobbyActivity.localLobby(this, id))
-        })
+        if(players != null && rounds != null && name != null){
+            model.createLobby(name, players, rounds, getString(R.string.player_value))
+            model.lobbyId.observe(this, { id ->
+                startActivity(LobbyActivity.localLobby(this, id))
+            })
+        }
     }
 
     private fun getNumPlayers(): Int ? =
-            views.nPlayersInput.text.toString().trim().toInt()
-                    .takeIf{it >= minPlayers}
+            views.nPlayersInput.text.toString().trim().toIntOrNull().takeIf{it!=null && it >=minPlayers }
 
     private fun getNumRounds(): Int ? =
-            views.nRoundsInput.text.toString().trim().toInt()
-                    .takeIf{it >= minRounds}
+            views.nRoundsInput.text.toString().trim().toIntOrNull()
+                    .takeIf{it!=null && it >=minRounds}
 
     private fun getLobbyName(): String ? =
             views.lobbyNameInput.text.toString().trim()

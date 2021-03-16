@@ -29,8 +29,11 @@ class LobbyViewModel(private val app: Application, private val state: SavedState
         repository.getLobby(lobbyId)
     }
 
+    lateinit var currentLobby: Lobby
+
     val players: LiveData<MutableList<Player>> by lazy {
         Transformations.switchMap(lobby){
+            currentLobby = it
             repository.getPlayers(it.id)
         }
     }

@@ -11,7 +11,6 @@ import pt.isel.tests.drag.R
 import pt.isel.tests.drag.repository.Lobby
 
 const val TAG ="AvailableLobbyAdapter"
-const val AVAILABILITY = "%d/%d"
 
 class AvailableLobbyAdapter internal  constructor(private val context: Context) :
     RecyclerView.Adapter<AvailableLobbyAdapter.AvailableLobbyViewHolder>() {
@@ -19,11 +18,13 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
     inner class AvailableLobbyViewHolder(lobbyView: View) : RecyclerView.ViewHolder(lobbyView) {
         val lobbyNameView: TextView = lobbyView.findViewById(R.id.lobby_name_header)
         val lobbyAvailabilityView: TextView = lobbyView.findViewById(R.id.lobby_availability_header)
+        val lobbyRoundsView: TextView = lobbyView.findViewById(R.id.lobby_rounds)
         val lobbyJoinButton: Button = lobbyView.findViewById(R.id.join_button)
     }
 
     private val inflater = LayoutInflater.from(context)
 
+    val availability = context.getString(R.string.lobby_players)
     var lobbyList = emptyList<Lobby>()
     set(lobby){
         field = lobby
@@ -38,7 +39,8 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
     override fun onBindViewHolder(holder: AvailableLobbyViewHolder, position: Int) {
         val lobby = lobbyList[position]
         holder.lobbyNameView.text = lobby.name
-        holder.lobbyAvailabilityView.text =  String.format(AVAILABILITY, lobby.players.size, lobby.nPlayers)
+        holder.lobbyAvailabilityView.text = availability.format(lobby.players.size, lobby.nPlayers)
+        holder.lobbyRoundsView.text = ""+lobby.nRound
     }
 
     override fun getItemCount(): Int = lobbyList.size

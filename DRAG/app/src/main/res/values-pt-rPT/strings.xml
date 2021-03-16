@@ -6,7 +6,7 @@
     <string name="remote_value">Remoto</string>
     <string name="game_mode_string">Seleccione um modo de jogo:</string>
     <string name="game_mode_title_string">Modo de jogo:</string>
-    <string name="game_setup_title_string">Configuração da sala</string>
+    <string name="lobby_setup_title_string">Configuração da sala</string>
     <string name="lobby_name_string">Nome da sala:</string>
     <string name="n_players_string">Nº de jogadores:</string>
     <string name="n_rounds_string">Nº de rondas:</string>
@@ -26,4 +26,9 @@
     <string name="confirm_string">Confirmar</string>
     <string name="cancel_string">Cancelar</string>
     <string name="player_name_hint">Escreve aqui o teu nome (min %d caracteres)</string>
+    <string name="player_state_string">Estado %d/%d</string>
+    <string name="player_name_string">Nome do jogador</string>
+    <string name="lobby_rounds_string">Rondas</string>
+    <string name="rounds_title">Rondas: %d</string>
+    <string name="lobby_name_title_string">Nome da sala: %s</string>
 </resources>

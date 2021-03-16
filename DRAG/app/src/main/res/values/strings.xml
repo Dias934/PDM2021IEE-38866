@@ -5,7 +5,7 @@
     <string name="remote_value">Remote</string>
     <string name="game_mode_string">Select a game mode:</string>
     <string name="game_mode_title_string">Game mode:</string>
-    <string name="game_setup_title_string">Lobby Setup</string>
+    <string name="lobby_setup_title_string">Lobby Setup</string>
     <string name="lobby_name_string">Lobby name:</string>
     <string name="n_players_string">Nº of players:</string>
     <string name="n_rounds_string">Nº of rounds:</string>
@@ -27,4 +27,9 @@
     <string name="confirm_string">Confirm</string>
     <string name="cancel_string">Cancel</string>
     <string name="player_name_hint">Write your name here (min %d characters)</string>
+    <string name="player_state_string">State %d/%d</string>
+    <string name="player_name_string">Player name</string>
+    <string name="lobby_rounds_string">Rounds</string>
+    <string name="rounds_title">Rounds: %d</string>
+    <string name="lobby_name_title_string">Lobby name: %s</string>
 </resources>
