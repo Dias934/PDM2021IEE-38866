@@ -31,4 +31,5 @@
     <string name="lobby_rounds_string">Rondas</string>
     <string name="rounds_title">Rondas: %d</string>
     <string name="lobby_name_title_string">Nome da sala: %s</string>
+    <string name="remove_string">Remover</string>
 </resources>

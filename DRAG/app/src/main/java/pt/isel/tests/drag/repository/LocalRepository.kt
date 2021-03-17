@@ -4,16 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.Executors
 
-class LocalRepository(private val database: Database) {
+class LocalRepository(private val database: Database) : ILocalRepository {
 
     private val lobbyDao = database.lobbyDao()
     private val playerDao = database.playerDao()
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    fun createLobby(type: LobbyType, name: String, maxPlayers: Int, maxRounds: Int,
-                    defaultPlayerName: String) : MutableLiveData<String> =
-            MutableLiveData<String>().apply {
+    override fun createLobby(type: LobbyType, name: String, maxPlayers: Int, maxRounds: Int,
+                             defaultPlayerName: String) = MutableLiveData<String>().apply {
                 executor.submit{
                     val lobby = Lobby(type, name, maxPlayers, maxRounds, LobbyState.FULL)
                     val players = mutableListOf<Player>()
@@ -29,10 +28,11 @@ class LocalRepository(private val database: Database) {
                 }
             }
 
-    fun getLobby(lobbyId: String) : LiveData<Lobby> = lobbyDao.get(lobbyId)
+    override fun getLobby(lobbyId: String) = lobbyDao.get(lobbyId)
 
-    fun getPlayers(lobbyId: String) : LiveData<MutableList<Player>> = playerDao.getAllPlayers(lobbyId)
-    fun updatePlayer(player: Player) {
+    override fun getPlayers(lobbyId: String) = playerDao.getAllPlayers(lobbyId)
+
+    override fun updatePlayer(player: Player) {
         executor.submit {
             playerDao.update(player)
         }

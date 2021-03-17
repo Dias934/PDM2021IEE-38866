@@ -32,4 +32,5 @@
     <string name="lobby_rounds_string">Rounds</string>
     <string name="rounds_title">Rounds: %d</string>
     <string name="lobby_name_title_string">Lobby name: %s</string>
+    <string name="remove_string">Remove</string>
 </resources>

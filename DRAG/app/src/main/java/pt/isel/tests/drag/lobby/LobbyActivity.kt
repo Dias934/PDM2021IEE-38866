@@ -54,6 +54,13 @@ class LobbyActivity : AppCompatActivity() {
                 views.lobbyActionButton.setText(R.string.start_string)
         })
 
+        model.player.observe(this, { player ->
+            if(model.lobbyType == LobbyType.REMOTE){
+                lobbyAdapter.currentPlayer = player
+                model.currentPlayer = player
+            }
+        })
+
         model.players.observe(this, {
             views.playerListHeader.playerStateView.text = getString(R.string.player_state_string)
                     .format(it.filter{player -> player.state == PlayerState.READY}.size,
@@ -67,7 +74,7 @@ class LobbyActivity : AppCompatActivity() {
     }
 
     private fun setPlayerListHeader(){
-        views.playerListHeader.editPlayerNameButton.visibility = View.INVISIBLE
+        views.playerListHeader.playerActionButton.visibility = View.INVISIBLE
         textViewHeaderSet(views.playerListHeader.playerNameView)
         textViewHeaderSet(views.playerListHeader.playerStateView)
     }

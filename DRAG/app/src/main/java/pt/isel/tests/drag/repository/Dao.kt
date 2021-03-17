@@ -17,7 +17,7 @@ interface LobbyDao{
     fun get(id : String): LiveData<Lobby>
 
     @Query("Select * from Lobby")
-    fun getAll(): LiveData<Lobby>
+    fun getAll(): LiveData<List<Lobby>>
 
     @Update
     fun updatePlayers(lobby: Lobby)
@@ -39,7 +39,7 @@ interface PlayerDao{
     fun get(lobbyId : String, playerId : String): LiveData<Player>
 
     @Query("Select * from Player where lobbyId = :lobbyId")
-    fun getAllPlayers(lobbyId: String): LiveData<MutableList<Player>>
+    fun getAllPlayers(lobbyId: String): LiveData<List<Player>>
 
     @Update
     fun update(player: Player)

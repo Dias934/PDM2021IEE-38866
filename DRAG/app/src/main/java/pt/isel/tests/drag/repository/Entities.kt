@@ -4,6 +4,7 @@ import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 const val MIN_N_PLAYERS = 5
@@ -11,6 +12,7 @@ const val MIN_N_ROUNDS = 1
 const val START_ROUND_NUMBER = 1
 const val START_TURN_NUMBER = 0
 
+private val formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yy")
 
 @Entity(tableName = "Lobby")
 data class Lobby(
@@ -35,7 +37,7 @@ data class Lobby(
         var id: String = UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "date")
-        var date: LocalDateTime = LocalDateTime.now(),
+        var date: String = LocalDateTime.now().format(formatter),
 
     @ColumnInfo(name = "players")
         var players: MutableList<String> = mutableListOf()
@@ -46,7 +48,7 @@ enum class LobbyType{
 }
 
 enum class LobbyState {
-    OPEN, FULL, PLAYING, CLOSED
+    OPENING, OPEN, FULL, PLAYING, CLOSED
 }
 
 @Entity(

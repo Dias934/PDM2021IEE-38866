@@ -43,11 +43,17 @@ class SetupLobbyActivity : AppCompatActivity() {
 
     fun createLobby(view: View){
         val (players, rounds, name) = getValidInputs()
-
         if(players != null && rounds != null && name != null){
             model.createLobby(name, players, rounds, getString(R.string.player_value))
-            model.lobbyId.observe(this, { id ->
-                startActivity(LobbyActivity.localLobby(this, id))
+            model.lobbyId.observe(this, { lobbyId ->
+                if(model.lobbyType == LobbyType.LOCAL)
+                    startActivity(LobbyActivity.localLobby(this, lobbyId))
+                else{
+                    model.getPlayerOwner(lobbyId)
+                    model.player.observe(this){ player ->
+                        startActivity(LobbyActivity.remoteLobby(this, lobbyId, player.id))
+                    }
+                }
             })
         }
     }

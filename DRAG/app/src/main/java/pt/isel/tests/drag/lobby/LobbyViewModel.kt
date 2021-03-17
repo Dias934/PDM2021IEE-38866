@@ -1,11 +1,10 @@
 package pt.isel.tests.drag.lobby
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import pt.isel.tests.drag.localRepository
+import pt.isel.tests.drag.remoteRepository
+import pt.isel.tests.drag.repository.IRemoteRepository
 import pt.isel.tests.drag.repository.Lobby
 import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.repository.Player
@@ -14,24 +13,34 @@ import java.lang.IllegalStateException
 
 class LobbyViewModel(private val app: Application, private val state: SavedStateHandle):AndroidViewModel(app) {
 
+    val lobbyType by lazy { state.get<LobbyType>(TYPE_FIELD) ?: throw IllegalStateException("Type of lobby not found!") }
+
     private val repository by lazy {
-        val lobbyType: LobbyType = state.get<LobbyType>(TYPE_FIELD)
-            ?: throw IllegalStateException("Type of lobby not found!")
         if(lobbyType == LobbyType.LOCAL)
             app.localRepository
         else
-            app.localRepository
+            app.remoteRepository
     }
 
+    private val lobbyId by lazy{ state.get<String>(LOBBY_ID) ?: throw IllegalStateException("Lobby not found!")}
+
     val lobby: LiveData<Lobby> by lazy {
-        val lobbyId: String = state.get<String>(LOBBY_ID)
-            ?: throw IllegalStateException("Lobby not found!")
         repository.getLobby(lobbyId)
     }
 
-    lateinit var currentLobby: Lobby
+    val player by lazy {
+        if(lobbyType == LobbyType.REMOTE){
+            val id = state.get<String>(PLAYER_ID) ?: throw IllegalStateException("Player id not found!")
+            (repository as IRemoteRepository).getPlayer(id)
+        }
+        else
+            MutableLiveData(Player())
+    }
 
-    val players: LiveData<MutableList<Player>> by lazy {
+    lateinit var currentLobby: Lobby
+    lateinit var currentPlayer: Player
+
+    val players: LiveData<List<Player>> by lazy {
         Transformations.switchMap(lobby){
             currentLobby = it
             repository.getPlayers(it.id)

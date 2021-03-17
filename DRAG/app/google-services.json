@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868191622442",
+    "project_id": "dragproject-93b29",
+    "storage_bucket": "dragproject-93b29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868191622442:android:afcf46556171d84ca03a53",
+        "android_client_info": {
+          "package_name": "pt.isel.tests.drag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868191622442-o5tlunpsciju726hh4vq6ue8hjde48jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvdXN3ywAQzbXpXQcNRyhmsjo7bL34MHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868191622442-o5tlunpsciju726hh4vq6ue8hjde48jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivityAvailableLobbyBinding
+import pt.isel.tests.drag.lobby.LobbyActivity
 
 import pt.isel.tests.drag.repository.Lobby
 import pt.isel.tests.drag.repository.LobbyType
@@ -34,8 +35,16 @@ class AvailableLobbyActivity : AppCompatActivity() {
         lobbyList.adapter = lobbyAdapter
         lobbyList.layoutManager = LinearLayoutManager(this)
 
-        lobbyAdapter.lobbyList = listOf(Lobby(LobbyType.REMOTE,  "sala 1"),
-                Lobby(LobbyType.REMOTE,"sala 2"))
+        model.lobbys.observe(this, {
+            lobbyAdapter.lobbyList = it
+        })
+
+        lobbyAdapter.joinLobby.observe(this, {lobbyId ->
+            model.createPlayer(lobbyId)
+            model.playerId.observe(this, {playerId ->
+                startActivity(LobbyActivity.remoteLobby(this, lobbyId, playerId))
+            })
+        })
     }
 
 

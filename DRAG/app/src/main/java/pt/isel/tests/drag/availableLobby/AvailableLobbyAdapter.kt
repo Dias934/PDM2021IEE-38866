@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.repository.Lobby
@@ -31,6 +33,8 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
         notifyDataSetChanged()
     }
 
+    val joinLobby = MutableLiveData<String>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailableLobbyViewHolder {
         val lobbyView = inflater.inflate(R.layout.available_lobby_item, parent, false)
         return AvailableLobbyViewHolder(lobbyView)
@@ -41,6 +45,9 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
         holder.lobbyNameView.text = lobby.name
         holder.lobbyAvailabilityView.text = availability.format(lobby.players.size, lobby.nPlayers)
         holder.lobbyRoundsView.text = ""+lobby.nRound
+        holder.lobbyJoinButton.setOnClickListener {
+            joinLobby.postValue(lobby.id)
+        }
     }
 
     override fun getItemCount(): Int = lobbyList.size
