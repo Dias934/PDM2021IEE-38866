@@ -15,8 +15,9 @@ interface ILocalRepository : IRepository{
 }
 
 interface IRemoteRepository : IRepository{
-    fun createPlayer(lobbyId: String, name: String, type: PlayerType) :LiveData<String>
+    fun createPlayer(lobby: Lobby, name: String, type: PlayerType) :LiveData<String>
     fun getPlayer(playerId: String) : LiveData<Player>
     fun getLobbys(state: LobbyState = LobbyState.OPEN):LiveData<List<Lobby>>
     fun getCreatedPlayer(createdLobby: String): LiveData<Player>
+    fun removePlayer(lobby: Lobby, player: Player)
 }

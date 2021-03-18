@@ -39,10 +39,10 @@ class AvailableLobbyActivity : AppCompatActivity() {
             lobbyAdapter.lobbyList = it
         })
 
-        lobbyAdapter.joinLobby.observe(this, {lobbyId ->
-            model.createPlayer(lobbyId)
+        lobbyAdapter.joinLobby.observe(this, {lobby ->
+            model.createPlayer(lobby)
             model.playerId.observe(this, {playerId ->
-                startActivity(LobbyActivity.remoteLobby(this, lobbyId, playerId))
+                startActivity(LobbyActivity.remoteLobby(this, lobby.id, playerId))
             })
         })
     }

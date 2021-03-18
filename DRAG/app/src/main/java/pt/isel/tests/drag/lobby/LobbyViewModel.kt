@@ -40,6 +40,8 @@ class LobbyViewModel(private val app: Application, private val state: SavedState
     lateinit var currentLobby: Lobby
     lateinit var currentPlayer: Player
 
+    fun isCurrentPlayerInitialized() = this::currentPlayer.isInitialized
+
     val players: LiveData<List<Player>> by lazy {
         Transformations.switchMap(lobby){
             currentLobby = it
@@ -47,6 +49,8 @@ class LobbyViewModel(private val app: Application, private val state: SavedState
         }
     }
 
-    fun updatePlayerName(player: Player) = repository.updatePlayer(player)
+    fun updatePlayer(player: Player) = repository.updatePlayer(player)
+
+    fun removePlayer(player: Player) = (repository as IRemoteRepository).removePlayer(currentLobby, player)
 
 }

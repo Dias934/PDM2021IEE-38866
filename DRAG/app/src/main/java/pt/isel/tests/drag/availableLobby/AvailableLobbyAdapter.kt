@@ -33,7 +33,7 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
         notifyDataSetChanged()
     }
 
-    val joinLobby = MutableLiveData<String>()
+    val joinLobby = MutableLiveData<Lobby>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvailableLobbyViewHolder {
         val lobbyView = inflater.inflate(R.layout.available_lobby_item, parent, false)
@@ -46,7 +46,7 @@ class AvailableLobbyAdapter internal  constructor(private val context: Context) 
         holder.lobbyAvailabilityView.text = availability.format(lobby.players.size, lobby.nPlayers)
         holder.lobbyRoundsView.text = ""+lobby.nRound
         holder.lobbyJoinButton.setOnClickListener {
-            joinLobby.postValue(lobby.id)
+            joinLobby.postValue(lobby)
         }
     }
 

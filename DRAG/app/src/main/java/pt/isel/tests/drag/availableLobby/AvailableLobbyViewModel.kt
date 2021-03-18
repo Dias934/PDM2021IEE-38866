@@ -21,8 +21,8 @@ class AvailableLobbyViewModel (private val app: Application, private val state: 
 
     lateinit var playerId: LiveData<String>
 
-    fun createPlayer(lobbyId: String) {
-        playerId = repository.createPlayer(lobbyId, app.resources.getString(R.string.player_name_string), PlayerType.NORMAL)
+    fun createPlayer(lobby: Lobby) {
+        playerId = repository.createPlayer(lobby, app.resources.getString(R.string.player_value).format(lobby.players.size), PlayerType.NORMAL)
     }
 
 }

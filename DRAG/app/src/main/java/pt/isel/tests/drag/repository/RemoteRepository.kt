@@ -18,17 +18,21 @@ private const val TYPE_FIELD = "type"
 class RemoteRepository(private val database: FirebaseFirestore) : IRemoteRepository {
 
 
-    override fun createPlayer(lobbyId: String, name: String, type: PlayerType): MutableLiveData<String> {
+    override fun createPlayer(lobby: Lobby, name: String, type: PlayerType): MutableLiveData<String> {
         val playerLD = MutableLiveData<String>()
-        val player = Player(name, type, lobbyId = lobbyId)
+        val player = Player(name, type, lobbyId = lobby.id)
 
-        database
-            .collection(PLAYER_COLLECTION)
-            .document(player.id)
-            .set(player)
-            .addOnSuccessListener {
-                playerLD.postValue(player.id)
-            }
+        database.runTransaction { transaction ->
+            lobby.players.add(player.id)
+            if(lobby.players.size == lobby.nPlayers)
+                lobby.state = LobbyState.FULL
+            transaction
+                    .set(database.collection(LOBBY_COLLECTION).document(lobby.id), lobby, SetOptions.merge())
+                    .set(database.collection(PLAYER_COLLECTION).document(player.id), player)
+        }.addOnSuccessListener {
+            playerLD.postValue(player.id)
+        }
+
         return playerLD
     }
 
@@ -37,10 +41,11 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
         database
             .collection(PLAYER_COLLECTION)
             .document(playerId)
-            .get()
-            .addOnSuccessListener {snap ->
-                val player = snap.toObject<Player>()
-                playerLD.postValue(player)
+            .addSnapshotListener { data, error ->
+                if(error == null && data != null){
+                    val player = data.toObject<Player>()
+                    playerLD.postValue(player)
+                }
             }
         return playerLD
     }
@@ -102,12 +107,12 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
 
         database.collection(LOBBY_COLLECTION)
             .document(lobbyId)
-            .get()
-            .addOnSuccessListener {
-                val lobby = it.toObject<Lobby>()
-                lobbyLD.postValue(lobby)
+            .addSnapshotListener { data, error ->
+                if(error == null && data != null){
+                    val lobby = data.toObject<Lobby>()
+                    lobbyLD.postValue(lobby)
+                }
             }
-
         return lobbyLD
     }
 
@@ -129,5 +134,18 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
         database.collection(PLAYER_COLLECTION)
             .document(player.id)
             .set(player, SetOptions.merge())
+    }
+
+    override fun removePlayer(lobby: Lobby, player: Player) {
+        database.runTransaction { transaction ->
+            lobby.players.remove(player.id)
+            if(lobby.players.size < lobby.nPlayers)
+                lobby.state = LobbyState.OPEN
+            transaction
+                    .set(database.collection(LOBBY_COLLECTION).document(lobby.id),
+                            lobby, SetOptions.merge())
+                    .delete(database.collection(PLAYER_COLLECTION).document(player.id))
+
+        }
     }
 }

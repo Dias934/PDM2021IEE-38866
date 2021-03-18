@@ -58,40 +58,45 @@ class LobbyAdapter internal  constructor(private val context: Context) :
 
         if(currentPlayer != noPlayer){
             if(currentPlayer.type == PlayerType.OWNER){
-                if(player.id != currentPlayer.id){
+                if(player.id == currentPlayer.id){
+                    holder.playerActionButton.visibility = View.VISIBLE
+                    holder.playerActionButton.setOnClickListener{
+                        playerChangeNameDialog(player)
+                    }
+                }
+                else{
+                    holder.playerActionButton.visibility = View.VISIBLE
                     holder.playerActionButton.setText(R.string.remove_string)
                     holder.playerActionButton.setOnClickListener {
                         removePlayer.postValue(player)
                     }
                 }
+            }
+            else{
+                if(player.id != currentPlayer.id){
+                    holder.playerActionButton.visibility = View.INVISIBLE
+                }
                 else{
+                    holder.playerActionButton.visibility = View.VISIBLE //necessary cause the order can change 
                     holder.playerActionButton.setOnClickListener{
-                        playerActionButtonEvent(player)
+                        playerChangeNameDialog(player)
                     }
                 }
-            }
-            if(player.id != currentPlayer.id){
-                holder.playerActionButton.visibility = View.INVISIBLE
-            }
-            else
-                holder.playerActionButton.setOnClickListener{
-                    playerActionButtonEvent(player)
-                }
 
+            }
         }
         else
             holder.playerActionButton.setOnClickListener {
-                playerActionButtonEvent(player)
+                playerChangeNameDialog(player)
         }
 
     }
 
-    private fun playerActionButtonEvent(player: Player){
+    private fun playerChangeNameDialog(player: Player){
         val edit = EditText(context)
-        val x = context.getString(R.string.player_name_hint)
-            .format(context.resources.getInteger(R.integer.min_chars))
-        edit.hint = x
-        val dialog = AlertDialog.Builder(context)
+        edit.hint = context.getString(R.string.player_name_hint)
+                .format(context.resources.getInteger(R.integer.min_chars))
+        AlertDialog.Builder(context)
             .setView(edit)
             .setPositiveButton(R.string.confirm_string) {dialog: DialogInterface, _: Int ->
                 val name = edit.text.toString()

@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivityLobbyBinding
 import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.repository.PlayerState
+import pt.isel.tests.drag.repository.PlayerType
 import pt.isel.tests.drag.setupLobby.TYPE_FIELD
 
 
@@ -55,22 +57,67 @@ class LobbyActivity : AppCompatActivity() {
         })
 
         model.player.observe(this, { player ->
-            if(model.lobbyType == LobbyType.REMOTE){
+            if(player == null){
+                Toast.makeText(this@LobbyActivity, "kicked out", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            else if(model.lobbyType == LobbyType.REMOTE) {
                 lobbyAdapter.currentPlayer = player
                 model.currentPlayer = player
+                if (player.type == PlayerType.OWNER) {
+                    views.lobbyActionButton.setText(R.string.start_string)
+                }
+                else{
+                    views.lobbyActionButton.setText(
+                            if(player.state == PlayerState.READY) R.string.ready_string
+                            else R.string.not_ready_string)
+                }
             }
         })
 
-        model.players.observe(this, {
+        model.players.observe(this, { playerList ->
+            if(model.isCurrentPlayerInitialized() && !playerList.contains(model.currentPlayer)){
+                Toast.makeText(this@LobbyActivity, "kicked out", Toast.LENGTH_SHORT).show()
+                finish()
+            }
             views.playerListHeader.playerStateView.text = getString(R.string.player_state_string)
-                    .format(it.filter{player -> player.state == PlayerState.READY}.size,
+                    .format(playerList.filter{player -> player.state == PlayerState.READY}.size,
                             model.currentLobby.nPlayers)
-            lobbyAdapter.playersList = it.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER, {player -> player.name}))
+            lobbyAdapter.playersList = playerList
+                    .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER, { player -> player.name}))
+
+            if(model.lobbyType == LobbyType.REMOTE && model.currentPlayer.type == PlayerType.OWNER) {
+                views.lobbyActionButton.isEnabled =
+                        playerList
+                                .filter { p -> p.state == PlayerState.READY }
+                                .size == model.currentLobby.nPlayers
+            }
         })
 
         lobbyAdapter.newNamePlayer.observe(this, {
-            model.updatePlayerName(it)
+            model.updatePlayer(it)
         })
+
+        lobbyAdapter.removePlayer.observe(this, {
+            model.removePlayer(it)
+        })
+    }
+
+    fun lobbyActionButtonClickEvent( view: View){
+        if(model.currentLobby.type == LobbyType.REMOTE){
+            if(model.currentPlayer.type == PlayerType.OWNER){
+                Toast.makeText(this,"Start game", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                model.currentPlayer.state =
+                        if(model.currentPlayer.state == PlayerState.READY) PlayerState.NOT_READY
+                        else PlayerState.READY
+                model.updatePlayer(model.currentPlayer)
+            }
+        }
+        else{
+            Toast.makeText(this,"Start game", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setPlayerListHeader(){
