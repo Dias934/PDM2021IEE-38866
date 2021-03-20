@@ -5,19 +5,19 @@ import androidx.room.Room
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
-import pt.isel.tests.drag.repository.Database
+import pt.isel.tests.drag.repository.DragDB
 import pt.isel.tests.drag.repository.LocalRepository
 import pt.isel.tests.drag.repository.RemoteRepository
 
 class DragApp : Application() {
 
     private val localDatabase by lazy{
-        Room.databaseBuilder(this, Database::class.java, "local_db")
+        Room.databaseBuilder(this, DragDB::class.java, "local_db")
                 .fallbackToDestructiveMigration()
                 .build()
     }
 
-    private val firestoreDatabase by lazy{
+    private val firestoreDB by lazy{
         Firebase.firestore.apply {
             firestoreSettings = firestoreSettings {
                 isPersistenceEnabled = false
@@ -27,7 +27,7 @@ class DragApp : Application() {
 
     val localRepository by lazy { LocalRepository(localDatabase) }
 
-    val remoteRepository by lazy { RemoteRepository(firestoreDatabase)}
+    val remoteRepository by lazy { RemoteRepository(firestoreDB)}
 }
 
 val Application.localRepository : LocalRepository
@@ -35,3 +35,4 @@ val Application.localRepository : LocalRepository
 
 val Application.remoteRepository : RemoteRepository
     get() = (this as DragApp).remoteRepository
+

@@ -1,7 +1,12 @@
 package pt.isel.tests.drag.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.toObject
@@ -15,21 +20,25 @@ private const val PLAYER_LOBBY_ID_FIELD = "lobbyId"
 private const val STATE_FIELD = "state"
 private const val TYPE_FIELD = "type"
 
-class RemoteRepository(private val database: FirebaseFirestore) : IRemoteRepository {
+private const val CONNECTED_REF =".info/connected"
+private const val PLAYERS_REF = "Players"
+
+class RemoteRepository(private val dbStorage: FirebaseFirestore) : IRemoteRepository {
 
 
     override fun createPlayer(lobby: Lobby, name: String, type: PlayerType): MutableLiveData<String> {
         val playerLD = MutableLiveData<String>()
         val player = Player(name, type, lobbyId = lobby.id)
 
-        database.runTransaction { transaction ->
+        dbStorage.runTransaction { transaction ->
             lobby.players.add(player.id)
             if(lobby.players.size == lobby.nPlayers)
                 lobby.state = LobbyState.FULL
             transaction
-                    .set(database.collection(LOBBY_COLLECTION).document(lobby.id), lobby, SetOptions.merge())
-                    .set(database.collection(PLAYER_COLLECTION).document(player.id), player)
+                    .set(dbStorage.collection(LOBBY_COLLECTION).document(lobby.id), lobby, SetOptions.merge())
+                    .set(dbStorage.collection(PLAYER_COLLECTION).document(player.id), player)
         }.addOnSuccessListener {
+
             playerLD.postValue(player.id)
         }
 
@@ -38,7 +47,7 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
 
     override fun getPlayer(playerId: String): LiveData<Player> {
         val playerLD = MutableLiveData<Player>()
-        database
+        dbStorage
             .collection(PLAYER_COLLECTION)
             .document(playerId)
             .addSnapshotListener { data, error ->
@@ -52,7 +61,7 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
 
     override fun getCreatedPlayer(createdLobby: String): LiveData<Player> {
         val playerLD = MutableLiveData<Player>()
-        database
+        dbStorage
             .collection(PLAYER_COLLECTION)
             .whereEqualTo(PLAYER_LOBBY_ID_FIELD, createdLobby)
             .whereEqualTo(TYPE_FIELD, PlayerType.OWNER)
@@ -66,7 +75,7 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
 
     override fun getLobbys(state: LobbyState): LiveData<List<Lobby>> {
         val lobbyLD = MutableLiveData<List<Lobby>>()
-        database
+        dbStorage
             .collection(LOBBY_COLLECTION)
             .whereEqualTo(STATE_FIELD, state)
             .addSnapshotListener { data, error ->
@@ -86,14 +95,14 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
 
         val player = Player(defaultPlayerName.format(0), PlayerType.OWNER, PlayerState.READY, lobby.id)
 
-        database.runTransaction{transaction ->
+        dbStorage.runTransaction{ transaction ->
             transaction
-                .set(database.collection(LOBBY_COLLECTION).document(lobby.id), lobby)
-                .set(database.collection(PLAYER_COLLECTION).document(player.id), player)
+                .set(dbStorage.collection(LOBBY_COLLECTION).document(lobby.id), lobby)
+                .set(dbStorage.collection(PLAYER_COLLECTION).document(player.id), player)
             lobby.players.add(player.id)
             lobby.state = LobbyState.OPEN
             transaction
-                .update(database.collection(LOBBY_COLLECTION).document(lobby.id)
+                .update(dbStorage.collection(LOBBY_COLLECTION).document(lobby.id)
                     ,LOBBY_PLAYERS_FIELD, lobby.players, STATE_FIELD, lobby.state)
         }. addOnSuccessListener {
                 lobbyLD.postValue(lobby.id)
@@ -105,7 +114,7 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
     override fun getLobby(lobbyId: String): LiveData<Lobby> {
         val lobbyLD = MutableLiveData<Lobby>()
 
-        database.collection(LOBBY_COLLECTION)
+        dbStorage.collection(LOBBY_COLLECTION)
             .document(lobbyId)
             .addSnapshotListener { data, error ->
                 if(error == null && data != null){
@@ -119,7 +128,7 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
     override fun getPlayers(lobbyId: String): LiveData<List<Player>> {
         val playersLD = MutableLiveData<List<Player>>()
 
-        database.collection(PLAYER_COLLECTION)
+        dbStorage.collection(PLAYER_COLLECTION)
             .whereEqualTo(PLAYER_LOBBY_ID_FIELD, lobbyId)
             .addSnapshotListener { data, error ->
                 if(error == null && data != null){
@@ -131,20 +140,20 @@ class RemoteRepository(private val database: FirebaseFirestore) : IRemoteReposit
     }
 
     override fun updatePlayer(player: Player) {
-        database.collection(PLAYER_COLLECTION)
+        dbStorage.collection(PLAYER_COLLECTION)
             .document(player.id)
             .set(player, SetOptions.merge())
     }
 
     override fun removePlayer(lobby: Lobby, player: Player) {
-        database.runTransaction { transaction ->
+        dbStorage.runTransaction { transaction ->
             lobby.players.remove(player.id)
             if(lobby.players.size < lobby.nPlayers)
                 lobby.state = LobbyState.OPEN
             transaction
-                    .set(database.collection(LOBBY_COLLECTION).document(lobby.id),
+                    .set(dbStorage.collection(LOBBY_COLLECTION).document(lobby.id),
                             lobby, SetOptions.merge())
-                    .delete(database.collection(PLAYER_COLLECTION).document(player.id))
+                    .delete(dbStorage.collection(PLAYER_COLLECTION).document(player.id))
 
         }
     }

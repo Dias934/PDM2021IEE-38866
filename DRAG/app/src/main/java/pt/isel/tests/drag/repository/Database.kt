@@ -7,7 +7,7 @@ import pt.isel.tests.drag.repository.converters.Converters
 
 @Database(entities = [Lobby::class, Player::class], version = 2)
 @TypeConverters(Converters::class)
-abstract class Database : RoomDatabase() {
+abstract class DragDB : RoomDatabase() {
 
     abstract fun lobbyDao() : LobbyDao
 

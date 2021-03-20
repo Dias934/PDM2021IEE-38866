@@ -33,4 +33,11 @@
     <string name="rounds_title">Rounds: %d</string>
     <string name="lobby_name_title_string">Lobby name: %s</string>
     <string name="remove_string">Remove</string>
+    <string name="start_word_title">Your word:</string>
+    <string name="start_word_hint">Write or generate word</string>
+    <string name="next_value">Next</string>
+    <string name="try_to_draw_string">Try to draw:</string>
+    <string name="guess_draw_string">Guess the draw:</string>
+
+
 </resources>

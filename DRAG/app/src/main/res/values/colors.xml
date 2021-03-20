@@ -7,5 +7,32 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="orange">#FFA500</color>
+    <color name="blue">#0000FF</color>
+    <color name="brown">#A52A2A</color>
+    <color name="cyan">#00FFFF</color>
+    <color name="gold">#FFD700</color>
+    <color name="green">#008000</color>
+    <color name="grey">#808080</color>
+    <color name="pink">#FFC0CB</color>
+    <color name="purple">#800080</color>
+    <color name="yellow">#FFFF00</color>
     <color name="transparent">#00000000</color>
+
+    <array name="color_array">
+        <item>@color/black</item>
+        <item>@color/grey</item>
+        <item>@color/white</item>
+        <item>@color/purple</item>
+        <item>@color/pink</item>
+        <item>@color/blue</item>
+        <item>@color/cyan</item>
+        <item>@color/green</item>
+        <item>@color/yellow</item>
+        <item>@color/gold</item>
+        <item>@color/orange</item>
+        <item>@color/red</item>
+        <item>@color/brown</item>
+    </array>
 </resources>

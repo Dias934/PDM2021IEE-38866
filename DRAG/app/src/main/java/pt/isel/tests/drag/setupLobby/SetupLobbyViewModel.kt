@@ -15,7 +15,7 @@ class SetupLobbyViewModel(private val app: Application, private val state: Saved
     AndroidViewModel(app) {
 
 
-    val lobbyType: LobbyType by lazy { state.get<LobbyType>(TYPE_FIELD)?: LobbyType.LOCAL }
+    val lobbyType: LobbyType by lazy { state.get<LobbyType>(LOBBY_TYPE)?: LobbyType.LOCAL }
 
     private val repository by lazy {
             if(lobbyType == LobbyType.LOCAL)

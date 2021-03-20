@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="width_drawables">
+        <item>@drawable/small</item>
+        <item>@drawable/medium</item>
+        <item>@drawable/large</item>
+        <item>@drawable/very_large</item>
+    </array>
+</resources>

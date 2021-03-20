@@ -1,10 +1,9 @@
 package pt.isel.tests.drag.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.Executors
 
-class LocalRepository(private val database: Database) : ILocalRepository {
+class LocalRepository(private val database: DragDB) : ILocalRepository {
 
     private val lobbyDao = database.lobbyDao()
     private val playerDao = database.playerDao()

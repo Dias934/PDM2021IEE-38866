@@ -12,7 +12,7 @@ import pt.isel.tests.drag.lobby.LobbyActivity
 import pt.isel.tests.drag.repository.LobbyType
 
 const val TAG = "SetupGameActivity"
-const val TYPE_FIELD = "type"
+const val LOBBY_TYPE = "type"
 
 class SetupLobbyActivity : AppCompatActivity() {
 
@@ -22,7 +22,7 @@ class SetupLobbyActivity : AppCompatActivity() {
         fun localSetupGame(context: Context) = newIntent(context, LobbyType.LOCAL)
 
         private fun newIntent(context: Context, type: LobbyType) = Intent(context, SetupLobbyActivity::class.java)
-            .apply { putExtra(TYPE_FIELD, type) }
+            .apply { putExtra(LOBBY_TYPE, type) }
     }
 
     private val views by lazy { ActivitySetupLobbyBinding.inflate(layoutInflater)}

@@ -8,12 +8,12 @@ import pt.isel.tests.drag.repository.IRemoteRepository
 import pt.isel.tests.drag.repository.Lobby
 import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.repository.Player
-import pt.isel.tests.drag.setupLobby.TYPE_FIELD
+import pt.isel.tests.drag.setupLobby.LOBBY_TYPE
 import java.lang.IllegalStateException
 
 class LobbyViewModel(private val app: Application, private val state: SavedStateHandle):AndroidViewModel(app) {
 
-    val lobbyType by lazy { state.get<LobbyType>(TYPE_FIELD) ?: throw IllegalStateException("Type of lobby not found!") }
+    val lobbyType by lazy { state.get<LobbyType>(LOBBY_TYPE) ?: throw IllegalStateException("Type of lobby not found!") }
 
     private val repository by lazy {
         if(lobbyType == LobbyType.LOCAL)

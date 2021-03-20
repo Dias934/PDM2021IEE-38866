@@ -32,4 +32,9 @@
     <string name="rounds_title">Rondas: %d</string>
     <string name="lobby_name_title_string">Nome da sala: %s</string>
     <string name="remove_string">Remover</string>
+    <string name="start_word_title">A tua palavra:</string>
+    <string name="start_word_hint">Escreve ou gera a palavra</string>
+    <string name="next_value">Próximo</string>
+    <string name="try_to_draw_string">Tenta desenhar:</string>
+    <string name="guess_draw_string">Adivinha o desenho:</string>
 </resources>

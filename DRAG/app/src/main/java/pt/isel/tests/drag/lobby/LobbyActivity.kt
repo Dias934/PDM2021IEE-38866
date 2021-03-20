@@ -11,10 +11,11 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivityLobbyBinding
+import pt.isel.tests.drag.game.GameActivity
 import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.repository.PlayerState
 import pt.isel.tests.drag.repository.PlayerType
-import pt.isel.tests.drag.setupLobby.TYPE_FIELD
+import pt.isel.tests.drag.setupLobby.LOBBY_TYPE
 
 
 const val LOBBY_ID ="lobby"
@@ -24,13 +25,13 @@ class LobbyActivity : AppCompatActivity() {
     companion object{
         fun localLobby(context: Context, lobbyId: String) : Intent =
                 Intent(context, LobbyActivity::class.java).apply {
-                    putExtra(TYPE_FIELD, LobbyType.LOCAL)
+                    putExtra(LOBBY_TYPE, LobbyType.LOCAL)
                     putExtra(LOBBY_ID, lobbyId)
                 }
 
         fun remoteLobby(context: Context, lobbyId: String, playerId: String) : Intent =
                 Intent(context, LobbyActivity::class.java).apply {
-                    putExtra(TYPE_FIELD, LobbyType.REMOTE)
+                    putExtra(LOBBY_TYPE, LobbyType.REMOTE)
                     putExtra(LOBBY_ID, lobbyId)
                     putExtra(PLAYER_ID, playerId)
                 }
@@ -106,7 +107,7 @@ class LobbyActivity : AppCompatActivity() {
     fun lobbyActionButtonClickEvent( view: View){
         if(model.currentLobby.type == LobbyType.REMOTE){
             if(model.currentPlayer.type == PlayerType.OWNER){
-                Toast.makeText(this,"Start game", Toast.LENGTH_SHORT).show()
+                startActivity(GameActivity.newIntent(this,LobbyType.REMOTE, "", "", ""))
             }
             else{
                 model.currentPlayer.state =
@@ -116,7 +117,7 @@ class LobbyActivity : AppCompatActivity() {
             }
         }
         else{
-            Toast.makeText(this,"Start game", Toast.LENGTH_SHORT).show()
+            startActivity(GameActivity.newIntent(this,LobbyType.REMOTE, "", "", ""))
         }
     }
 
