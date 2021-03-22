@@ -53,7 +53,7 @@ enum class LobbyState {
 
 @Entity(
     tableName = "Player",
-    primaryKeys = ["lobbyId", "id"],
+    primaryKeys = ["lobbyId", "name"],
     foreignKeys = [
         ForeignKey(
             onDelete = CASCADE,
@@ -64,20 +64,17 @@ enum class LobbyState {
     ]
 )
 data class Player(
+        @ColumnInfo( name = "lobbyId")
+        val lobbyId: String = "",
+
         @ColumnInfo(name = "name")
-        var name: String ="",
+        val name: String ="",
 
         @ColumnInfo(name = "type")
-        var type: PlayerType = PlayerType.NORMAL,
+        val type: PlayerType = PlayerType.NORMAL,
 
         @ColumnInfo(name = "state")
-        var state: PlayerState = PlayerState.NOT_READY,
-
-        @ColumnInfo( name = "lobbyId")
-        var lobbyId: String = "",
-
-        @ColumnInfo(name ="id")
-        var id: String = UUID.randomUUID().toString()
+        val state: PlayerState = PlayerState.NOT_READY
 )
 
 enum class PlayerType {
@@ -88,37 +85,92 @@ enum class PlayerState{
     READY, NOT_READY
 }
 
+
+@Entity(
+        tableName = "Game",
+        primaryKeys = ["lobbyId", "date"],
+        foreignKeys = [
+            ForeignKey(
+                    onDelete = CASCADE,
+                    childColumns = ["lobbyId"],
+                    parentColumns = ["id"],
+                    entity = Lobby::class
+            )
+        ],
+        indices = [
+                Index("lobbyId", unique = true),
+                Index("date", unique = true)
+        ]
+)
 data class Game(
-        var lobbyId: String,
+        @ColumnInfo(name = "lobbyId")
+        val lobbyId: String = "",
 
-        var id: String= UUID.randomUUID().toString(),
+        @ColumnInfo(name = "state")
+        val state: GameState = GameState.FINISHED,
 
-        var date: LocalDate = LocalDate.now()
+        @ColumnInfo(name = "date")
+        val date: LocalDateTime = LocalDateTime.now()
 )
 
+enum class GameState{
+    ALIVE, FINISHED
+}
+
+
+@Entity(
+        tableName = "Round",
+        primaryKeys = ["lobbyId", "gameDate", "number"],
+        foreignKeys = [
+            ForeignKey(
+                    onDelete = CASCADE,
+                    childColumns = ["lobbyId"],
+                    parentColumns = ["id"],
+                    entity = Lobby::class
+            ),
+            ForeignKey(
+                    onDelete = CASCADE,
+                    childColumns = ["gameDate"],
+                    parentColumns = ["date"],
+                    entity = Game::class
+            )
+        ],
+        indices = [
+            Index("lobbyId", unique = true),
+            Index("gameDate", unique = true)
+        ]
+)
 data class Round(
-        var lobbyId: String,
+        @ColumnInfo(name = "lobbyId")
+        val lobbyId: String = "",
 
-        var order: MutableList<String>,
+        @ColumnInfo(name = "gameDate")
+        val gameDate: LocalDateTime = LocalDateTime.now(),
 
-        var number: Int = START_ROUND_NUMBER,
+        @ColumnInfo(name = "order")
+        val order: MutableList<String> = mutableListOf(),
+
+        @ColumnInfo(name = "number")
+        val number: Int = START_ROUND_NUMBER,
 
 )
 
 data class Turn(
-    var lobbyId: String,
+    var lobbyId: String = "",
 
-    var roundNumber: Int,
+    var gameDate: LocalDateTime = LocalDateTime.now(),
 
-    var type: TurnType,
+    var roundNumber: Int = START_ROUND_NUMBER,
 
-    var play: String,
+    var type: TurnType = TurnType.START_WORD,
 
-    var nTurn: Int = START_ROUND_NUMBER
+    var play: String = "",
+
+    var nTurn: Int = START_TURN_NUMBER
 )
 
 enum class TurnType{
-    WORD, DRAW
+    START_WORD, WORD, DRAW
 }
 
 

@@ -4,10 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import pt.isel.tests.drag.localRepository
 import pt.isel.tests.drag.remoteRepository
-import pt.isel.tests.drag.repository.IRemoteRepository
-import pt.isel.tests.drag.repository.Lobby
-import pt.isel.tests.drag.repository.LobbyType
-import pt.isel.tests.drag.repository.Player
+import pt.isel.tests.drag.repository.*
 import pt.isel.tests.drag.setupLobby.LOBBY_TYPE
 import java.lang.IllegalStateException
 
@@ -30,8 +27,8 @@ class LobbyViewModel(private val app: Application, private val state: SavedState
 
     val player by lazy {
         if(lobbyType == LobbyType.REMOTE){
-            val id = state.get<String>(PLAYER_ID) ?: throw IllegalStateException("Player id not found!")
-            (repository as IRemoteRepository).getPlayer(id)
+            val name = state.get<String>(PLAYER_NAME) ?: throw IllegalStateException("Player id not found!")
+            (repository as IRemoteRepository).getPlayer(lobbyId, name)
         }
         else
             MutableLiveData(Player())
@@ -49,7 +46,10 @@ class LobbyViewModel(private val app: Application, private val state: SavedState
         }
     }
 
-    fun updatePlayer(player: Player) = repository.updatePlayer(player)
+    fun renamePlayer(oldName: String, newName: String): LiveData<Boolean> =
+            repository.renamePlayer(currentLobby, oldName, newName)
+
+    fun changePlayerState(state: PlayerState) =  (repository as IRemoteRepository).changePlayerState(currentLobby.id, currentPlayer.name, state)
 
     fun removePlayer(player: Player) = (repository as IRemoteRepository).removePlayer(currentLobby, player)
 

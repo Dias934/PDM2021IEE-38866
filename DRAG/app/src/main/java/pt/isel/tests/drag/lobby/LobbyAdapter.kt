@@ -42,7 +42,7 @@ class LobbyAdapter internal  constructor(private val context: Context) :
             notifyDataSetChanged()
         }
 
-    var newNamePlayer: MutableLiveData<Player> = MutableLiveData()
+    var newNamePlayer: MutableLiveData<PlayerRename> = MutableLiveData()
     var removePlayer: MutableLiveData<Player> = MutableLiveData()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LobbyAdapter.LobbyViewHolder {
@@ -58,7 +58,7 @@ class LobbyAdapter internal  constructor(private val context: Context) :
 
         if(currentPlayer != noPlayer){
             if(currentPlayer.type == PlayerType.OWNER){
-                if(player.id == currentPlayer.id){
+                if(player.name == currentPlayer.name){
                     holder.playerActionButton.visibility = View.VISIBLE
                     holder.playerActionButton.setOnClickListener{
                         playerChangeNameDialog(player)
@@ -73,7 +73,7 @@ class LobbyAdapter internal  constructor(private val context: Context) :
                 }
             }
             else{
-                if(player.id != currentPlayer.id){
+                if(player.name != currentPlayer.name){
                     holder.playerActionButton.visibility = View.INVISIBLE
                 }
                 else{
@@ -101,8 +101,7 @@ class LobbyAdapter internal  constructor(private val context: Context) :
             .setPositiveButton(R.string.confirm_string) {dialog: DialogInterface, _: Int ->
                 val name = edit.text.toString()
                 if(name.length >= context.resources.getInteger(R.integer.min_chars)){
-                    player.name = name
-                    newNamePlayer.postValue(player)
+                    newNamePlayer.postValue(PlayerRename(player.name, name))
                     dialog.dismiss()
                 }
                 else {
@@ -118,3 +117,5 @@ class LobbyAdapter internal  constructor(private val context: Context) :
 
     override fun getItemCount(): Int = playersList.size
 }
+
+data class PlayerRename(val oldName: String, val newName: String)

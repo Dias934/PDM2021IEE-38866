@@ -16,10 +16,11 @@ import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.repository.PlayerState
 import pt.isel.tests.drag.repository.PlayerType
 import pt.isel.tests.drag.setupLobby.LOBBY_TYPE
+import pt.isel.tests.drag.observeOnce
 
 
 const val LOBBY_ID ="lobby"
-const val PLAYER_ID = "player"
+const val PLAYER_NAME = "player"
 class LobbyActivity : AppCompatActivity() {
 
     companion object{
@@ -29,11 +30,11 @@ class LobbyActivity : AppCompatActivity() {
                     putExtra(LOBBY_ID, lobbyId)
                 }
 
-        fun remoteLobby(context: Context, lobbyId: String, playerId: String) : Intent =
+        fun remoteLobby(context: Context, lobbyId: String, playerName: String) : Intent =
                 Intent(context, LobbyActivity::class.java).apply {
                     putExtra(LOBBY_TYPE, LobbyType.REMOTE)
                     putExtra(LOBBY_ID, lobbyId)
-                    putExtra(PLAYER_ID, playerId)
+                    putExtra(PLAYER_NAME, playerName)
                 }
     }
 
@@ -87,16 +88,28 @@ class LobbyActivity : AppCompatActivity() {
             lobbyAdapter.playersList = playerList
                     .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER, { player -> player.name}))
 
-            if(model.lobbyType == LobbyType.REMOTE && model.currentPlayer.type == PlayerType.OWNER) {
-                views.lobbyActionButton.isEnabled =
-                        playerList
-                                .filter { p -> p.state == PlayerState.READY }
-                                .size == model.currentLobby.nPlayers
+            if(model.lobbyType == LobbyType.REMOTE ){
+                if( model.currentPlayer.type == PlayerType.OWNER) {
+                    views.lobbyActionButton.isEnabled =
+                            playerList
+                                    .filter { p -> p.state == PlayerState.READY }
+                                    .size == model.currentLobby.nPlayers
+                }
+                else{
+                    startActivity(GameActivity.startRemoteGame(this,
+                            model.currentLobby.id,
+                            model.currentPlayer.name,
+                            ""))
+                }
             }
         })
 
         lobbyAdapter.newNamePlayer.observe(this, {
-            model.updatePlayer(it)
+            model.renamePlayer(it.oldName, it.newName)
+                    .observeOnce{resp ->
+                        if(!resp)
+                            Toast.makeText(this, getString(R.string.rename_operation_error_string), Toast.LENGTH_SHORT).show()
+                    }
         })
 
         lobbyAdapter.removePlayer.observe(this, {
@@ -107,17 +120,21 @@ class LobbyActivity : AppCompatActivity() {
     fun lobbyActionButtonClickEvent( view: View){
         if(model.currentLobby.type == LobbyType.REMOTE){
             if(model.currentPlayer.type == PlayerType.OWNER){
-                startActivity(GameActivity.newIntent(this,LobbyType.REMOTE, "", "", ""))
+                startActivity(GameActivity.startRemoteGame(this,
+                        model.currentLobby.id,
+                        model.currentPlayer.name,
+                        ""))
             }
             else{
-                model.currentPlayer.state =
-                        if(model.currentPlayer.state == PlayerState.READY) PlayerState.NOT_READY
-                        else PlayerState.READY
-                model.updatePlayer(model.currentPlayer)
+                model.changePlayerState(
+                        if(model.currentPlayer.state == PlayerState.READY)
+                            PlayerState.NOT_READY
+                        else
+                            PlayerState.READY)
             }
         }
         else{
-            startActivity(GameActivity.newIntent(this,LobbyType.REMOTE, "", "", ""))
+            startActivity(GameActivity.startLocalGame(this, model.currentLobby.id, ""))
         }
     }
 
@@ -131,3 +148,4 @@ class LobbyActivity : AppCompatActivity() {
         text.setTextColor(resources.getColor(R.color.white,null))
     }
 }
+

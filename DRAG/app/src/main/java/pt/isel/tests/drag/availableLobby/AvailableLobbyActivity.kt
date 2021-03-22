@@ -61,7 +61,7 @@ class AvailableLobbyActivity : AppCompatActivity() {
 
 
 
-    fun goToSetupLobby(view: View) = startActivity(SetupLobbyActivity.remoteSetupGame(this))
+    fun createRemoteLobby(view: View) = startActivity(SetupLobbyActivity.remoteSetupGame(this))
 
 
 

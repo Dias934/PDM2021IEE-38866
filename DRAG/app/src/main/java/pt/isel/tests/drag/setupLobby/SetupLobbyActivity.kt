@@ -51,7 +51,7 @@ class SetupLobbyActivity : AppCompatActivity() {
                 else{
                     model.getPlayerOwner(lobbyId)
                     model.player.observe(this){ player ->
-                        startActivity(LobbyActivity.remoteLobby(this, lobbyId, player.id))
+                        startActivity(LobbyActivity.remoteLobby(this, lobbyId, player.name))
                     }
                 }
             })

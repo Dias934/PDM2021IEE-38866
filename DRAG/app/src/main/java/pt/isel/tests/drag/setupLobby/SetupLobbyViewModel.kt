@@ -32,7 +32,7 @@ class SetupLobbyViewModel(private val app: Application, private val state: Saved
     }
 
     fun getPlayerOwner(createdLobby: String){
-        player = (repository as IRemoteRepository).getCreatedPlayer(createdLobby)
+        player = (repository as IRemoteRepository).getOwnerFromOpeningLobby(createdLobby)
     }
 
 
