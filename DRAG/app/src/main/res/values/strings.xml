@@ -38,6 +38,7 @@
     <string name="next_value">Next</string>
     <string name="try_to_draw_string">Try to draw:</string>
     <string name="guess_draw_string">Guess the draw:</string>
+    <string name="delete_draw_text">Are you sure you want to delete this draw? This operation cannot be undone</string>
 
 
 </resources>

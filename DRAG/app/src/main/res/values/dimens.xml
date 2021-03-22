@@ -14,12 +14,12 @@
     <dimen name="inner_frame_layout_padding">5dp</dimen>
     <dimen name="header_text_size">24sp</dimen>
 
-    <dimen name="small_width" format="float">1</dimen>
+    <dimen name="small_width" format="float">4</dimen>
     <dimen name="medium_width" format="float">8</dimen>
     <dimen name="large_width" format="float">16</dimen>
-    <dimen name="super_large_width" format="float">32</dimen>
+    <dimen name="super_large_width" format="float">24</dimen>
 
-    <array  name="width_array">
+    <array name="width_array">
         <item>@dimen/small_width</item>
         <item>@dimen/medium_width</item>
         <item>@dimen/large_width</item>

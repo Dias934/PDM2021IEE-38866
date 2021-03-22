@@ -10,22 +10,25 @@ interface Shape {
 data class Point(val x: Float, val y: Float,  val color: Int, val strokeWidth: Float)
     : Shape {
     override fun draw(canvas: Canvas) {
-        canvas.drawPoint(
+        canvas.drawCircle(
                 x*canvas.width,
                 y*canvas.height,
-                ink(color, Paint.Style.FILL_AND_STROKE, strokeWidth)
+                strokeWidth/2,
+                ink(color, Paint.Style.FILL_AND_STROKE, 0F)
         )
     }
 }
 
 data class Line(private val begin: Point, private val end: Point) : Shape {
     override fun draw(canvas: Canvas) {
+        begin.draw(canvas)
+        end.draw(canvas)
         canvas.drawLine(
                 begin.x * canvas.width,
                 begin.y * canvas.height,
                 end.x * canvas.width,
                 end.y * canvas.height,
-                ink(begin.color, Paint.Style.FILL_AND_STROKE, begin.strokeWidth)
+                ink(begin.color, Paint.Style.FILL, begin.strokeWidth)
         )
     }
 }

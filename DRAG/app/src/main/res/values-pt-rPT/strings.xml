@@ -37,4 +37,5 @@
     <string name="next_value">Próximo</string>
     <string name="try_to_draw_string">Tenta desenhar:</string>
     <string name="guess_draw_string">Adivinha o desenho:</string>
+    <string name="delete_draw_text">Queres remover o desenho? Esta operação não pode ser desfeita</string>
 </resources>

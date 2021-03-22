@@ -1,6 +1,8 @@
 package pt.isel.tests.drag.game
 
 import android.content.Context
+import android.view.View
+import android.widget.AdapterView
 import androidx.core.content.res.getResourceIdOrThrow
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.game.gameViews.ISpinnerAdapter
@@ -35,6 +37,18 @@ class DrawToolsAdapter(val context: Context) {
         return widths
     }
 
+}
+
+class DrawItemSelector<T>(val action: (T) -> Unit) : AdapterView.OnItemSelectedListener {
+
+     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if(parent != null){
+            val item = parent.getItemAtPosition(position)
+            action(item as T)
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 }
 
 
