@@ -2,7 +2,7 @@
 <resources>
     <integer name="max_lobby_name">10</integer>
     <integer name="max_digits">2</integer>
-    <integer name="min_players">5</integer>
+    <integer name="min_players">2</integer>
     <integer name="max_players">99</integer>
     <integer name="min_rounds">1</integer>
     <integer name="max_rounds">99</integer>

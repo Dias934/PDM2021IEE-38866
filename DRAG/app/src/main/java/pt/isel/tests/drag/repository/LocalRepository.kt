@@ -2,14 +2,15 @@ package pt.isel.tests.drag.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.Transformations
+import pt.isel.tests.drag.repository.converters.Converters
+import pt.isel.tests.drag.repository.entities.*
 import java.util.concurrent.Executors
 
-class LocalRepository(private val database: DragDB) : IRepository {
+class LocalRepository(database: DragDB) : ILocalRepository {
 
     private val lobbyDao = database.lobbyDao()
     private val playerDao = database.playerDao()
+    private val gameDao = database.gameDao()
 
     private val executor = Executors.newSingleThreadExecutor()
 
@@ -17,9 +18,9 @@ class LocalRepository(private val database: DragDB) : IRepository {
                              defaultPlayerName: String) = MutableLiveData<String>().apply {
                 executor.submit{
                     val lobby = Lobby(type, name, maxPlayers, maxRounds, LobbyState.FULL)
-                    val players = mutableListOf<Player>()
+                    val players = mutableListOf<LocalPlayer>()
                     for ( i in 0 until maxPlayers){
-                        val player = Player(lobby.id, defaultPlayerName.format(i), PlayerType.NORMAL,
+                        val player = LocalPlayer(lobby.id, defaultPlayerName.format(i), PlayerType.NORMAL,
                             PlayerState.READY)
                         lobby.players.add(player.name)
                         players.add(player)
@@ -34,22 +35,36 @@ class LocalRepository(private val database: DragDB) : IRepository {
 
     override fun getPlayers(lobbyId: String) = playerDao.getAllPlayers(lobbyId)
 
-    override fun renamePlayer(lobby: Lobby, oldPlayerName: String, newPlayerName: String) : LiveData<Boolean> {
-        val resp= MutableLiveData<Boolean>()
+    override fun renamePlayer(lobby: Lobby, oldPlayerName: String, newPlayerName: String) : LiveData<RepositoryResponse> {
+        val resp= MutableLiveData<RepositoryResponse>()
 
         executor.submit {
-            if (lobby.players.contains(newPlayerName) || !lobby.players.contains(oldPlayerName))
-                resp.postValue(false)
-            else {
-                resp.postValue(true)
-                playerDao.updatePlayerName(oldPlayerName, newPlayerName)
-                lobby.players.remove(oldPlayerName)
-                lobby.players.add(newPlayerName)
-                lobbyDao.updatePlayers(lobby)
+            when{
+                lobby.players.contains(newPlayerName) -> resp.postValue(RepositoryResponse.ALREADY_EXISTS)
+                !lobby.players.contains(oldPlayerName) -> resp.postValue(RepositoryResponse.NOT_FOUND)
+                else ->{
+                    resp.postValue(RepositoryResponse.OK)
+                    playerDao.updatePlayerName(oldPlayerName, newPlayerName)
+                    lobby.players.remove(oldPlayerName)
+                    lobby.players.add(newPlayerName)
+                    lobbyDao.updatePlayers(lobby)
+                }
             }
         }
 
         return resp
     }
 
+    override fun createGame(lobby: Lobby): LiveData<String> {
+        val gameDate = MutableLiveData<String>()
+
+        executor.submit {
+            val game = Game(lobby.id)
+            gameDao.insert(game)
+            lobbyDao.updateLobbyState(lobby.id, LobbyState.PLAYING)
+            gameDate.postValue(game.id)
+        }
+
+        return gameDate
+    }
 }

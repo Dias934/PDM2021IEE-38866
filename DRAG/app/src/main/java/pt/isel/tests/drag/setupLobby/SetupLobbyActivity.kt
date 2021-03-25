@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivitySetupLobbyBinding
 import pt.isel.tests.drag.lobby.LobbyActivity
-import pt.isel.tests.drag.repository.LobbyType
+import pt.isel.tests.drag.repository.entities.LobbyType
 
 const val TAG = "SetupGameActivity"
 const val LOBBY_TYPE = "type"
@@ -51,7 +51,7 @@ class SetupLobbyActivity : AppCompatActivity() {
                 else{
                     model.getPlayerOwner(lobbyId)
                     model.player.observe(this){ player ->
-                        startActivity(LobbyActivity.remoteLobby(this, lobbyId, player.name))
+                        startActivity(LobbyActivity.remoteLobby(this, lobbyId, player.docRef))
                     }
                 }
             })

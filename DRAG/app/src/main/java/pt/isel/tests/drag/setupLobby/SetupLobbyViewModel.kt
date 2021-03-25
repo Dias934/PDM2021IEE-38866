@@ -7,8 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import pt.isel.tests.drag.localRepository
 import pt.isel.tests.drag.remoteRepository
 import pt.isel.tests.drag.repository.IRemoteRepository
-import pt.isel.tests.drag.repository.LobbyType
-import pt.isel.tests.drag.repository.Player
+import pt.isel.tests.drag.repository.entities.LobbyType
+import pt.isel.tests.drag.repository.entities.RemotePlayer
 
 
 class SetupLobbyViewModel(private val app: Application, private val state: SavedStateHandle):
@@ -25,7 +25,7 @@ class SetupLobbyViewModel(private val app: Application, private val state: Saved
     }
 
     lateinit var lobbyId: LiveData<String>
-    lateinit var player: LiveData<Player>
+    lateinit var player: LiveData<RemotePlayer>
 
     fun createLobby(name: String, players: Int, rounds: Int, defaultPlayerName: String) {
             lobbyId = repository.createLobby(lobbyType, name, players, rounds, defaultPlayerName)
@@ -34,6 +34,4 @@ class SetupLobbyViewModel(private val app: Application, private val state: Saved
     fun getPlayerOwner(createdLobby: String){
         player = (repository as IRemoteRepository).getOwnerFromOpeningLobby(createdLobby)
     }
-
-
 }

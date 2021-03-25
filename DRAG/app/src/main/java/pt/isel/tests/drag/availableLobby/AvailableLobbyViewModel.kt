@@ -6,8 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import pt.isel.tests.drag.R
 import pt.isel.tests.drag.remoteRepository
-import pt.isel.tests.drag.repository.Lobby
-import pt.isel.tests.drag.repository.PlayerType
+import pt.isel.tests.drag.repository.entities.Lobby
+import pt.isel.tests.drag.repository.entities.LobbyState
+import pt.isel.tests.drag.repository.entities.PlayerType
 
 class AvailableLobbyViewModel (private val app: Application, private val state: SavedStateHandle):
     AndroidViewModel(app) {
@@ -16,13 +17,13 @@ class AvailableLobbyViewModel (private val app: Application, private val state: 
     private val repository by lazy{ app.remoteRepository}
 
     val lobbys: LiveData<List<Lobby>> by lazy {
-        repository.getLobbys()
+        repository.getLobbys(LobbyState.OPEN)
     }
 
-    lateinit var playerId: LiveData<String>
+    lateinit var playerRef: LiveData<String>
 
     fun createPlayer(lobby: Lobby) {
-        playerId = repository.createPlayer(lobby, app.resources.getString(R.string.player_value).format(lobby.players.size), PlayerType.NORMAL)
+        playerRef = repository.createPlayer(lobby, app.resources.getString(R.string.player_value).format(lobby.players.size), PlayerType.NORMAL)
     }
 
 }

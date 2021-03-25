@@ -17,8 +17,8 @@ import pt.isel.tests.drag.game.gameViews.Line
 import pt.isel.tests.drag.game.gameViews.Point
 import pt.isel.tests.drag.game.gameViews.Shape
 import pt.isel.tests.drag.lobby.LOBBY_ID
-import pt.isel.tests.drag.lobby.PLAYER_NAME
-import pt.isel.tests.drag.repository.LobbyType
+import pt.isel.tests.drag.lobby.PLAYER_REF
+import pt.isel.tests.drag.repository.entities.LobbyType
 import pt.isel.tests.drag.setupLobby.LOBBY_TYPE
 
 const val GAME_ID ="game"
@@ -38,7 +38,7 @@ class GameActivity : AppCompatActivity() {
                 Intent(context, GameActivity::class.java).apply {
                     putExtra(LOBBY_TYPE, LobbyType.REMOTE)
                     putExtra(LOBBY_ID, lobbyId)
-                    putExtra(PLAYER_NAME, playerId)
+                    putExtra(PLAYER_REF, playerId)
                     putExtra(GAME_ID, gameId)
                 }
     }

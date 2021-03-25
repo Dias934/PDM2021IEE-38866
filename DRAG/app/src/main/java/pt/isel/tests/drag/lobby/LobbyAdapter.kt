@@ -12,12 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import pt.isel.tests.drag.R
-import pt.isel.tests.drag.repository.Player
-import pt.isel.tests.drag.repository.PlayerState
-import pt.isel.tests.drag.repository.PlayerType
+import pt.isel.tests.drag.repository.entities.*
 
 
-class LobbyAdapter internal  constructor(private val context: Context) :
+class LobbyAdapter internal  constructor(private val context: Context)  :
     RecyclerView.Adapter<LobbyAdapter.LobbyViewHolder>() {
 
     inner class LobbyViewHolder(lobbyView: View) : RecyclerView.ViewHolder(lobbyView) {
@@ -28,22 +26,21 @@ class LobbyAdapter internal  constructor(private val context: Context) :
 
     private val inflater = LayoutInflater.from(context)
 
-    private val noPlayer = Player()
-
-    var playersList: List<Player> = emptyList()
+    var playersList: List<IPlayer> = emptyList()
     set(players){
         field = players
         notifyDataSetChanged()
     }
 
-    var currentPlayer: Player = noPlayer
-        set(player) {
-            field = player
-            notifyDataSetChanged()
-        }
+    private lateinit var currentPlayer: IPlayer
 
     var newNamePlayer: MutableLiveData<PlayerRename> = MutableLiveData()
-    var removePlayer: MutableLiveData<Player> = MutableLiveData()
+    var removePlayer: MutableLiveData<IPlayer> = MutableLiveData()
+
+    fun setCurrentPlayer(player: IPlayer){
+        currentPlayer = player
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LobbyAdapter.LobbyViewHolder {
         val lobbyView = inflater.inflate(R.layout.player_item, parent, false)
@@ -56,43 +53,57 @@ class LobbyAdapter internal  constructor(private val context: Context) :
         holder.playerNameView.text = player.name
         holder.playerStateView.text = if(player.state == PlayerState.READY) context.getString(R.string.ready_string) else context.getString(R.string.not_ready_string)
 
-        if(currentPlayer != noPlayer){
-            if(currentPlayer.type == PlayerType.OWNER){
-                if(player.name == currentPlayer.name){
-                    holder.playerActionButton.visibility = View.VISIBLE
-                    holder.playerActionButton.setOnClickListener{
-                        playerChangeNameDialog(player)
-                    }
-                }
-                else{
-                    holder.playerActionButton.visibility = View.VISIBLE
-                    holder.playerActionButton.setText(R.string.remove_string)
-                    holder.playerActionButton.setOnClickListener {
-                        removePlayer.postValue(player)
-                    }
-                }
-            }
-            else{
-                if(player.name != currentPlayer.name){
-                    holder.playerActionButton.visibility = View.INVISIBLE
-                }
-                else{
-                    holder.playerActionButton.visibility = View.VISIBLE //necessary cause the order can change 
-                    holder.playerActionButton.setOnClickListener{
-                        playerChangeNameDialog(player)
-                    }
-                }
-
-            }
-        }
-        else
+        if(!this::currentPlayer.isInitialized){
             holder.playerActionButton.setOnClickListener {
                 playerChangeNameDialog(player)
+            }
+        }
+        else{
+            with(currentPlayer as RemotePlayer){
+                if(this.type == PlayerType.OWNER)
+                    handlePlayerOwner(holder, this, player as RemotePlayer)
+                else
+                    handlePlayerNormal(holder, this, player as RemotePlayer)
+            }
         }
 
     }
 
-    private fun playerChangeNameDialog(player: Player){
+
+
+    private fun handlePlayerOwner(holder: LobbyAdapter.LobbyViewHolder, currentPlayer: RemotePlayer,
+                                  player: RemotePlayer) {
+        if(currentPlayer.docRef == player.docRef){
+            holder.playerActionButton.visibility = View.VISIBLE
+            holder.playerActionButton.setText(R.string.edit_name_value)
+            holder.playerActionButton.setOnClickListener{
+                playerChangeNameDialog(player)
+            }
+        }
+        else{
+            holder.playerActionButton.visibility = View.VISIBLE
+            holder.playerActionButton.setText(R.string.remove_string)
+            holder.playerActionButton.setOnClickListener {
+                removePlayer.postValue(player)
+            }
+        }
+    }
+
+    private fun handlePlayerNormal(holder: LobbyAdapter.LobbyViewHolder, currentPlayer: RemotePlayer,
+                                   player: RemotePlayer) {
+        if(player.docRef != currentPlayer.docRef){
+            holder.playerActionButton.visibility = View.INVISIBLE
+        }
+        else{
+            //necessary cause the position can change because of the sorting
+            holder.playerActionButton.visibility = View.VISIBLE
+            holder.playerActionButton.setOnClickListener{
+                playerChangeNameDialog(player)
+            }
+        }
+    }
+
+    private fun playerChangeNameDialog(player: IPlayer){
         val edit = EditText(context)
         edit.hint = context.getString(R.string.player_name_hint)
                 .format(context.resources.getInteger(R.integer.min_chars))

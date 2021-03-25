@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import pt.isel.tests.drag.R
-import pt.isel.tests.drag.repository.Lobby
+import pt.isel.tests.drag.repository.entities.Lobby
 
 const val TAG ="AvailableLobbyAdapter"
 

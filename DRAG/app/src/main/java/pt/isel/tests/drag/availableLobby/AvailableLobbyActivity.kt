@@ -12,8 +12,6 @@ import pt.isel.tests.drag.R
 import pt.isel.tests.drag.databinding.ActivityAvailableLobbyBinding
 import pt.isel.tests.drag.lobby.LobbyActivity
 
-import pt.isel.tests.drag.repository.Lobby
-import pt.isel.tests.drag.repository.LobbyType
 import pt.isel.tests.drag.setupLobby.SetupLobbyActivity
 
 class AvailableLobbyActivity : AppCompatActivity() {
@@ -41,7 +39,7 @@ class AvailableLobbyActivity : AppCompatActivity() {
 
         lobbyAdapter.joinLobby.observe(this, {lobby ->
             model.createPlayer(lobby)
-            model.playerId.observe(this, {playerId ->
+            model.playerRef.observe(this, { playerId ->
                 startActivity(LobbyActivity.remoteLobby(this, lobby.id, playerId))
             })
         })
